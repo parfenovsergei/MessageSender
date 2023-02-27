@@ -1,6 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+
+using MessageSenderAPI;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+var connection = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
