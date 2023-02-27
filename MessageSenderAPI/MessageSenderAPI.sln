@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33403.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageSenderAPI", "MessageSenderAPI\MessageSenderAPI.csproj", "{CFE26F98-AC26-4E8B-AF19-0CC8BE64C457}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFE26F98-AC26-4E8B-AF19-0CC8BE64C457}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFE26F98-AC26-4E8B-AF19-0CC8BE64C457}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFE26F98-AC26-4E8B-AF19-0CC8BE64C457}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFE26F98-AC26-4E8B-AF19-0CC8BE64C457}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40C0D5BE-F4EE-44F3-8EAF-CB07CDF57A68}
+	EndGlobalSection
+EndGlobal
