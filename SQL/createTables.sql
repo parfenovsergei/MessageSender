@@ -5,6 +5,7 @@ create table Users
 	Id int primary key identity(1,1),
 	Email nvarchar(100) not null,
 	[Password] char(128) not null,
+	Salt char(128) not null,
 	[Role] int not null
 )
 

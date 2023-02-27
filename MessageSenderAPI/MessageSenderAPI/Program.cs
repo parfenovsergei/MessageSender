@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 using MessageSenderAPI;
 using MessageSenderAPI.AutoMapper;
+using MessageSenderAPI.Domain.Helpers;
+using MessageSenderAPI.Services.Interfaces;
+using MessageSenderAPI.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +12,8 @@ builder.Services.AddControllers();
 
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
+builder.Services.AddScoped<IAuthService, AuthService>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
