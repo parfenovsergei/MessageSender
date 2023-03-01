@@ -25,7 +25,15 @@ namespace MessageSenderAPI.Services.Implementations
             };
             await _context.Messages.AddAsync(newMessage);
             await _context.SaveChangesAsync();
-            return "Message added to DB.";
+            return "Message created.";
+        }
+
+        public async  Task<string> DeleteMessageAsync(int id)
+        {
+            var message = await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
+            _context.Messages.Remove(message);
+            await _context.SaveChangesAsync();
+            return "Message deleted";
         }
 
         public async Task<List<Message>> GetMessagesAsync(string userEmail)
@@ -34,6 +42,17 @@ namespace MessageSenderAPI.Services.Implementations
                 .Where(m => m.Owner.Email == userEmail)
                 .ToListAsync();
             return messages;
+        }
+
+        public async Task<string> UpdateMessageAsync(int id, Message newMessage)
+        {
+            var message = await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
+            message.MessageTheme = newMessage.MessageTheme;
+            message.MessageBody = newMessage.MessageBody;
+            message.SendDate = newMessage.SendDate;
+            _context.Messages.Update(message);
+            await _context.SaveChangesAsync();
+            return "Message updated.";
         }
     }
 }

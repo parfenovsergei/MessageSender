@@ -39,5 +39,20 @@ namespace MessageSenderAPI.Controllers
             var result = await _messageService.CreateMessageAsync(message, userEmail);
             return result;
         }
+
+        [HttpPut("messages/{id}")]
+        public async Task<string> UpdateMessageAsync(int id, [FromBody] MessageDTO messageDTO)
+        {
+            var message = _mapper.Map<Message>(messageDTO);
+            var result = await _messageService.UpdateMessageAsync(id, message);
+            return result;
+        }
+
+        [HttpDelete("messages/{id}")]
+        public async Task<string> DeleteMessageAsync(int id)
+        {
+            var result = await _messageService.DeleteMessageAsync(id);
+            return result;
+        }
     }
 }
