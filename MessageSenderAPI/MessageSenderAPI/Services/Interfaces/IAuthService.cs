@@ -4,6 +4,7 @@ namespace MessageSenderAPI.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<string> Register(User user);
+        Task<string> LoginAsync(User loginUser);
+        Task<string> RegisterAsync(User registerUser);
     }
 }

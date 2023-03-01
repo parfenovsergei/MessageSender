@@ -10,16 +10,35 @@ namespace MessageSenderAPI.Domain.Helpers
         {
             byte[] salt = new byte[64];
             RandomNumberGenerator.Fill(salt);
-            return BitConverter.ToString(salt).Replace("-", "").ToLower();
+            return BitConverter.ToString(salt)
+                .Replace("-", "")
+                .ToLower();
         }
 
         public static string HashPassword(string password, string salt)
         {
             using (var sha512 = SHA512.Create())
             {
-                var hashedBytes = sha512.ComputeHash(Encoding.UTF8.GetBytes(String.Concat(salt, password)));
-                var hash = BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+                var hashedBytes = sha512.ComputeHash(Encoding.UTF8.
+                    GetBytes(String.Concat(salt, password)));
+                var hash = BitConverter.ToString(hashedBytes)
+                    .Replace("-", "")
+                    .ToLower();
                 return hash;
+            }
+        }
+
+        public static bool VerifyPassword(string password, string passwordHash, string salt)
+        {
+            using (var sha512 = SHA512.Create())
+            {
+                var hashedBytes = sha512.ComputeHash(Encoding.UTF8
+                    .GetBytes(String.Concat(salt, password)));
+                var hash = BitConverter.ToString(hashedBytes)
+                    .Replace("-", "")
+                    .ToLower();
+                var result = String.Equals(hash, passwordHash);
+                return result;
             }
         }
     }
