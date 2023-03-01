@@ -1,4 +1,4 @@
 use MessageSender
 
 alter table [Messages]
-add isSend bit not null
+add IsSend bit not null

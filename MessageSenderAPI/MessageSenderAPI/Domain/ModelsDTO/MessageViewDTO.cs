@@ -1,11 +1,11 @@
-﻿namespace MessageSenderAPI.Domain.Models
+﻿using MessageSenderAPI.Domain.Models;
+
+namespace MessageSenderAPI.Domain.ModelsDTO
 {
-    public class Message
+    public class MessageViewDTO
     {
-        public int Id { get; set; }
         public string MessageTheme { get; set; }
         public string MessageBody { get; set; }
-        public virtual User User { get; set; }
         public DateTime SendDate { get; set; }
         public bool IsSend { get; set; }
     }
