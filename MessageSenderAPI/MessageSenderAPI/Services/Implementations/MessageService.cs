@@ -36,6 +36,12 @@ namespace MessageSenderAPI.Services.Implementations
             return "Message deleted";
         }
 
+        public async Task<List<Message>> GetAllMessagesAsync()
+        {
+            var messages = await _context.Messages.ToListAsync();
+            return messages;
+        }
+
         public async Task<List<Message>> GetMessagesAsync(string userEmail)
         {
             var messages = await _context.Messages

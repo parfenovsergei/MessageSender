@@ -49,7 +49,7 @@ namespace MessageSenderAPI.Services.Implementations
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginUser.Email);
                 if (HashHelper.VerifyPassword(loginUser.Password, user.Password, user.Salt))
                 {
-                    string token = CreateToken(loginUser);
+                    string token = CreateToken(user);
                     return token;
                 }
                 return "Wrong password.";
