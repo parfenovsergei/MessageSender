@@ -17,6 +17,7 @@ var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 builder.Services.AddEndpointsApiExplorer();

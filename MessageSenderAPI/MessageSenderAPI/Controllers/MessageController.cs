@@ -9,7 +9,6 @@ using System.Security.Claims;
 
 namespace MessageSenderAPI.Controllers
 {
-    [Route("user")]
     [ApiController]
     [Authorize]
     public class MessageController : ControllerBase
