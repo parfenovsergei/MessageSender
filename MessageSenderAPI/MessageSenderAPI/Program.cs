@@ -42,7 +42,6 @@ builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(MessageMapping
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

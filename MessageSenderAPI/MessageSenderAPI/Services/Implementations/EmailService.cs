@@ -17,7 +17,7 @@ namespace MessageSenderAPI.Services.Implementations
             _context = context;
             _config = config;
         }
-        public async Task CheckToSendMessages()
+        public async Task CheckToSendMessagesAsync()
         {
             var messagesToSend = await _context.Messages
                 .Where(m => m.IsSend == false && m.SendDate <= DateTime.Now)
@@ -36,7 +36,7 @@ namespace MessageSenderAPI.Services.Implementations
                 Console.WriteLine("No messages to send :(");
         }
 
-        private async Task SendMessage(Message message)
+        private async Task SendMessageAsync(Message message)
         {
             var sendMessage = new MimeMessage();
             sendMessage.From.Add(new MailboxAddress("AdminMessageService", _config.GetSection("EmailUsername").Value));

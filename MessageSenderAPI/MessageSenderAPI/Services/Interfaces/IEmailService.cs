@@ -4,6 +4,6 @@ namespace MessageSenderAPI.Services.Interfaces
 {
     public interface IEmailService
     {
-        Task CheckToSendMessages();
+        Task CheckToSendMessagesAsync();
     }
 }
