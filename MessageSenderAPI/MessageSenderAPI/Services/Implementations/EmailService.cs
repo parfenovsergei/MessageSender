@@ -28,9 +28,12 @@ namespace MessageSenderAPI.Services.Implementations
                 {
                     await SendMessage(message);
                     message.IsSend = true;
+                    Console.WriteLine($"Message with id:{message.Id} is send to {message.Owner.Email}");
                 }
                 await _context.SaveChangesAsync();
             }
+            else
+                Console.WriteLine("No messages to send :(");
         }
 
         private async Task SendMessage(Message message)

@@ -8,10 +8,12 @@ using MessageSenderAPI.AutoMapper;
 using MessageSenderAPI.Domain.Helpers;
 using MessageSenderAPI.Services.Interfaces;
 using MessageSenderAPI.Services.Implementations;
+using MessageSenderAPI.Services.Background;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddHostedService<EmailBackgroundService>();
 
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection));
