@@ -19,7 +19,7 @@ namespace MessageSenderAPI.Services.Background
                 using (var scope = _serviceScopeFactory.CreateScope())
                 {
                     var _emailService = scope.ServiceProvider.GetService<IEmailService>();
-                    await _emailService.CheckToSendMessages();
+                    await _emailService.CheckToSendMessagesAsync();
                 }
                 Console.WriteLine("Background completed. Wait 1 minute to work again!");
                 await Task.Delay(delay, stoppingToken);
