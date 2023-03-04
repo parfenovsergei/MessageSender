@@ -10,6 +10,7 @@ using MessageSenderAPI.Services.Interfaces;
 using MessageSenderAPI.Services.Implementations;
 using MessageSenderAPI.Services.Background;
 
+var messageOrigins = "messageOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -40,6 +41,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(MessageMappingProfile));
 
+var frontUrl = builder.Configuration.GetSection("FrontURL").Value;
+builder.Services.AddCors(
+    options =>
+    {
+        options.AddPolicy(name: messageOrigins,
+            policy =>
+            {
+                policy.WithOrigins(frontUrl)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+    }
+);
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -50,6 +65,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors(messageOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
 
