@@ -26,7 +26,7 @@ namespace MessageSenderAPI.Services.Implementations
             {
                 foreach (var message in messagesToSend)
                 {
-                    await SendMessage(message);
+                    await SendMessageAsync(message);
                     message.IsSend = true;
                     Console.WriteLine($"Message with id:{message.Id} is send to {message.Owner.Email}");
                 }
