@@ -5,6 +5,8 @@ using MessageSenderAPI.Domain.Models;
 using MessageSenderAPI.Domain.ModelsDTO;
 using AutoMapper;
 using MessageSenderAPI.Services.Interfaces;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace MessageSenderAPI.Controllers
 {
@@ -25,7 +27,7 @@ namespace MessageSenderAPI.Controllers
         {
             var user = _mapper.Map<User>(userAuthDTO);
             var result = await _authService.RegisterAsync(user);
-            return result;
+            return JsonConvert.SerializeObject(result);
         }
 
         [HttpPost("login")]
@@ -33,7 +35,7 @@ namespace MessageSenderAPI.Controllers
         {
             var user = _mapper.Map<User>(userAuthDTO);
             var token = await _authService.LoginAsync(user);
-            return token;
+            return JsonConvert.SerializeObject(token);
         }
     }
 }
