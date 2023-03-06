@@ -78,7 +78,7 @@ namespace MessageSenderAPI.Services.Implementations
         private bool IsExist(string email)
         {
             var user = _context.Users.FirstOrDefault(u => u.Email == email);
-            return user != null ? true : false;
+            return user != null;
         }
     }
 }

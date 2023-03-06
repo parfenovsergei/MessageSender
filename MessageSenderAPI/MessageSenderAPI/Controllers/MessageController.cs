@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MessageSenderAPI.Domain.Enums;
 using MessageSenderAPI.Domain.Models;
 using MessageSenderAPI.Domain.ModelsDTO;
 using MessageSenderAPI.Services.Interfaces;
@@ -24,7 +25,7 @@ namespace MessageSenderAPI.Controllers
         [HttpGet("messages")]
         public async Task<List<MessageViewDTO>> GetMessagesAsync()
         {
-            if (HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Role).Value == "User")
+            if (HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Role).Value == Role.User.ToString())
             {
                 var userEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
                 var messages = await _messageService.GetMessagesAsync(userEmail);
@@ -40,7 +41,7 @@ namespace MessageSenderAPI.Controllers
         }
 
         [HttpPost("messages")]
-        public async Task<string> CreateMessageAsync([FromBody] MessageDTO messageDTO)
+        public async Task<ActionResult<string>> CreateMessageAsync([FromBody] MessageDTO messageDTO)
         {
             var userEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
             var message = _mapper.Map<Message>(messageDTO);
@@ -49,7 +50,7 @@ namespace MessageSenderAPI.Controllers
         }
 
         [HttpPut("messages/{id}")]
-        public async Task<string> UpdateMessageAsync(int id, [FromBody] MessageDTO messageDTO)
+        public async Task<ActionResult<string>> UpdateMessageAsync(int id, [FromBody] MessageDTO messageDTO)
         {
             var message = _mapper.Map<Message>(messageDTO);
             var result = await _messageService.UpdateMessageAsync(id, message);
@@ -57,7 +58,7 @@ namespace MessageSenderAPI.Controllers
         }
 
         [HttpDelete("messages/{id}")]
-        public async Task<string> DeleteMessageAsync(int id)
+        public async Task<ActionResult<string>> DeleteMessageAsync(int id)
         {
             var result = await _messageService.DeleteMessageAsync(id);
             return result;
