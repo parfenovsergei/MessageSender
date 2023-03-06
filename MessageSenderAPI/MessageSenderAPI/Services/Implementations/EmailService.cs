@@ -2,9 +2,11 @@
 using MailKit.Security;
 using MimeKit;
 using MailKit.Net.Smtp;
+using System.Threading.Tasks;
 
 using MessageSenderAPI.Domain.Models;
 using MessageSenderAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 
 namespace MessageSenderAPI.Services.Implementations
 {
@@ -19,33 +21,16 @@ namespace MessageSenderAPI.Services.Implementations
         }
         public async Task CheckToSendMessagesAsync()
         {
-            var messagesToSend = await _context.Messages
+            await _context.Messages
+                .Include(m => m.Owner)
                 .Where(m => m.IsSend == false && m.SendDate <= DateTime.Now)
-                .ToListAsync();
-            if (messagesToSend != null)
-            {
-                foreach (var message in messagesToSend)
+                .ForEachAsync(message =>
                 {
-                    await SendMessageAsync(message);
-                    message.IsSend = true;
-                    Console.WriteLine($"Message with id:{message.Id} is send to {message.Owner.Email}");
-                }
-                await _context.SaveChangesAsync();
-            }
-            else
-                Console.WriteLine("No messages to send :(");
-            
-            //почему-то поле isSend не обновляется
-            /*_context.Messages
-                .Where(m => m.IsSend == false && m.SendDate <= DateTime.Now)
-                .ToList()
-                .ForEach(async message =>
-                {
-                    await SendMessageAsync(message);
+                    SendMessageAsync(message);
                     message.IsSend = true;
                     Console.WriteLine($"Message with id:{message.Id} is send to {message.Owner.Email}");
                 });
-            await _context.SaveChangesAsync();*/
+            await _context.SaveChangesAsync();
         }
 
         private async Task SendMessageAsync(Message message)
@@ -76,7 +61,7 @@ namespace MessageSenderAPI.Services.Implementations
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Message is not send, exception message: {ex.Message}");
+                Console.WriteLine($"Message with id:{message.Id} is not send, exception message: {ex.Message}");
             }
         }
     }
