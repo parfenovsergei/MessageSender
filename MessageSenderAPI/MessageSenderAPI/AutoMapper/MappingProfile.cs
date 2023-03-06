@@ -4,10 +4,12 @@ using MessageSenderAPI.Domain.ModelsDTO;
 
 namespace MessageSenderAPI.AutoMapper
 {
-    public class MessageMappingProfile : Profile
+    public class MappingProfile : Profile
     {
-        public MessageMappingProfile()
+        public MappingProfile() 
         {
+            CreateMap<UserRegisterDTO, User>();
+            CreateMap<UserLoginDTO, User>();
             CreateMap<Message, MessageViewDTO>();
             CreateMap<MessageDTO, Message>();
         }

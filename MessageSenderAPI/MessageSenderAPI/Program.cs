@@ -39,7 +39,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAutoMapper(typeof(UserMappingProfile), typeof(MessageMappingProfile));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var frontUrl = builder.Configuration.GetSection("FrontURL").Value;
 builder.Services.AddCors(

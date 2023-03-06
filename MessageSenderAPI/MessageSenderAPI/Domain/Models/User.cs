@@ -9,6 +9,6 @@ namespace MessageSenderAPI.Domain.Models
         public string Password { get; set; }
         public string Salt { get; set; }
         public Role Role { get; set; }
-        public virtual List<Message> Messages { get; set; } = new List<Message>();
+        public List<Message> Messages { get; set; } = new List<Message>();
     }
 }

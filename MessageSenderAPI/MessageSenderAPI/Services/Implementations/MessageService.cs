@@ -45,6 +45,7 @@ namespace MessageSenderAPI.Services.Implementations
         public async Task<List<Message>> GetMessagesAsync(string userEmail)
         {
             var messages = await _context.Messages
+                .Include(m => m.Owner)
                 .Where(m => m.Owner.Email == userEmail)
                 .ToListAsync();
             return messages;

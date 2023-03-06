@@ -23,17 +23,17 @@ namespace MessageSenderAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<string> RegisterAsync([FromBody] UserAuthDTO userAuthDTO)
+        public async Task<ActionResult<string>> RegisterAsync([FromBody] UserRegisterDTO userRegisterDTO)
         {
-            var user = _mapper.Map<User>(userAuthDTO);
+            var user = _mapper.Map<User>(userRegisterDTO);
             var result = await _authService.RegisterAsync(user);
             return JsonConvert.SerializeObject(result);
         }
 
         [HttpPost("login")]
-        public async Task<string> LoginAsync([FromBody] UserAuthDTO userAuthDTO)
+        public async Task<ActionResult<string>> LoginAsync([FromBody] UserLoginDTO userLoginDTO)
         {
-            var user = _mapper.Map<User>(userAuthDTO);
+            var user = _mapper.Map<User>(userLoginDTO);
             var token = await _authService.LoginAsync(user);
             return JsonConvert.SerializeObject(token);
         }
