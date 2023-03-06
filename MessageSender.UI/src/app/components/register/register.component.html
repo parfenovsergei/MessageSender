@@ -7,14 +7,18 @@
 			<form class="example-form" [formGroup]="registerForm" (ngSubmit)="registration(registerForm)">
 				<mat-form-field class="example-full-width">
 					<mat-label>Email</mat-label>
-					<input matInput formControlName="Email" >
+					<input matInput formControlName="Email"  name="email">
+					<mat-error *ngIf="registerForm.controls['Email'].hasError('required')">Email is required</mat-error>
+					<mat-error *ngIf="registerForm.controls['Email'].hasError('email')">Incorrect email format</mat-error>
 				</mat-form-field>
 				<mat-form-field class="example-full-width">
 					<mat-label>Password</mat-label>
 					<input type="password" matInput formControlName="Password" >
+					<mat-error *ngIf="registerForm.controls['Password'].hasError('required')">Password is required</mat-error>
+					<mat-error *ngIf="registerForm.controls['Password'].hasError('minlength')">Min password length is 6 symbols</mat-error>
 				</mat-form-field>
 				<div class="register-button">
-					<button mat-raised-button color="primary">Register</button>
+					<button [disabled]="registerForm.invalid" mat-raised-button color="primary">Register</button>
 				</div>
 			</form>
 		</mat-card-content>	
