@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup , FormControl, Validators , FormGroupDirective } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import { FormGroup , FormControl, Validators , FormGroupDirective } from '@angul
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(){
+  constructor(private authService: AuthService){
     this.loginForm = new FormGroup({
       "Email": new FormControl("", [
         Validators.required,
@@ -19,5 +20,27 @@ export class LoginComponent {
         Validators.required
       ])
     });
+  }
+
+  get email()
+  {
+    return this.loginForm.controls["Email"].value;
+  }
+
+  get password()
+  {
+    return this.loginForm.controls["Password"].value;
+  }
+
+  login(){
+    this.authService
+      .login(
+        this.email,
+        this.password)
+      .subscribe((token: string) => 
+        {
+          localStorage.setItem("authToken", token);
+          this.authService.showMessage("You have successfully logged in", "OK");
+        })
   }
 }

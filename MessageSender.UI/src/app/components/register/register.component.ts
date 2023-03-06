@@ -11,29 +11,42 @@ import { AuthService } from 'src/app/services/auth.service';
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   
-  constructor(private authService: AuthService, private router: Router){
-    this.registerForm = new FormGroup({
-      "Email": new FormControl("", [
-        Validators.required,
-        Validators.email
-      ]),
-      "Password": new FormControl("", [
-        Validators.required,
-        Validators.minLength(6)
-      ])
-    });
+  constructor(
+    private authService: AuthService,
+    private router: Router
+    ){
+      this.registerForm = new FormGroup({
+        "Email": new FormControl("", [
+          Validators.required,
+          Validators.email
+        ]),
+        "Password": new FormControl("", [
+          Validators.required,
+          Validators.minLength(6)
+        ])
+      });
   }
   
   ngOnInit() {
 
   }
 
-  registration(form: FormGroup){
+  get email()
+  {
+    return this.registerForm.controls["Email"].value;
+  }
+
+  get password()
+  {
+    return this.registerForm.controls["Password"].value;
+  }
+
+  registration(){
     this.authService
     .registration(
-      form.controls["Email"].value,
-      form.controls["Password"].value)
-    .subscribe((result: string) => (console.log(result)));
+      this.email,
+      this.password)
+    .subscribe((result: string) => (this.authService.showMessage(result, "OK")));
     this.router.navigateByUrl('login')
   }
 }

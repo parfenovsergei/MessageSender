@@ -4,7 +4,7 @@
 			<h2>Registeration</h2>
 		</mat-card-header>
 		<mat-card-content class="registerCard">
-			<form class="example-form" [formGroup]="registerForm" (ngSubmit)="registration(registerForm)">
+			<form class="example-form" [formGroup]="registerForm" (ngSubmit)="registration()">
 				<mat-form-field class="example-full-width">
 					<mat-label>Email</mat-label>
 					<input matInput formControlName="Email"  name="email">
