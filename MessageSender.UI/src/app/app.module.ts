@@ -14,11 +14,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { MessageComponent } from './components/message/message.component';
 
 const appRoutes: Routes =[
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent},
-  { path: 'register', component: RegisterComponent}
+  { path: 'register', component: RegisterComponent},
+  { path: 'message', component: MessageComponent}
 ];
 
 @NgModule({
@@ -26,7 +28,8 @@ const appRoutes: Routes =[
     AppComponent,
     ToolbarComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,
