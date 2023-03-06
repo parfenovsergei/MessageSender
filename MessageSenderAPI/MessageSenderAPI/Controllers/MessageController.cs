@@ -6,6 +6,7 @@ using MessageSenderAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace MessageSenderAPI.Controllers
@@ -46,7 +47,7 @@ namespace MessageSenderAPI.Controllers
             var userEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
             var message = _mapper.Map<Message>(messageDTO);
             var result = await _messageService.CreateMessageAsync(message, userEmail);
-            return result;
+            return JsonConvert.SerializeObject(result);
         }
 
         [HttpPut("messages/{id}")]
@@ -54,14 +55,14 @@ namespace MessageSenderAPI.Controllers
         {
             var message = _mapper.Map<Message>(messageDTO);
             var result = await _messageService.UpdateMessageAsync(id, message);
-            return result;
+            return JsonConvert.SerializeObject(result);
         }
 
         [HttpDelete("messages/{id}")]
         public async Task<ActionResult<string>> DeleteMessageAsync(int id)
         {
             var result = await _messageService.DeleteMessageAsync(id);
-            return result;
+            return JsonConvert.SerializeObject(result);
         }
     }
 }
