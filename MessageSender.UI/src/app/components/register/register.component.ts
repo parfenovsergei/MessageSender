@@ -34,7 +34,7 @@ export class RegisterComponent implements OnInit {
     .registration(
       form.controls["Email"].value,
       form.controls["Password"].value)
-    .subscribe(() => (console.log("Register completed")));
+    .subscribe((result: string) => (console.log(result)));
     this.router.navigateByUrl('login')
   }
 }
