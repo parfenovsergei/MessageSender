@@ -34,6 +34,18 @@ namespace MessageSenderAPI.Services.Implementations
             }
             else
                 Console.WriteLine("No messages to send :(");
+            
+            //почему-то поле isSend не обновляется
+            /*_context.Messages
+                .Where(m => m.IsSend == false && m.SendDate <= DateTime.Now)
+                .ToList()
+                .ForEach(async message =>
+                {
+                    await SendMessageAsync(message);
+                    message.IsSend = true;
+                    Console.WriteLine($"Message with id:{message.Id} is send to {message.Owner.Email}");
+                });
+            await _context.SaveChangesAsync();*/
         }
 
         private async Task SendMessageAsync(Message message)
@@ -64,7 +76,7 @@ namespace MessageSenderAPI.Services.Implementations
             }
             catch (Exception ex)
             {
-                throw;
+                Console.WriteLine($"Message is not send, exception message: {ex.Message}");
             }
         }
     }
