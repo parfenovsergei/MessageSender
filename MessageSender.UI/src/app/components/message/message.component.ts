@@ -33,4 +33,26 @@ export class MessageComponent implements OnInit{
     this.maxDate.setDate(this.maxDate.getDate() + 365);
   }
 
+  get messageTheme(){
+    return this.messageForm.controls['MessageTheme'].value;
+  }
+
+  get MessageBody(){
+    return this.messageForm.controls['MessageBody'].value;
+  }
+
+  get SendDate(){
+    return this.messageForm.controls['SendDate'].value;
+  }
+
+  createMessage(){
+    this.messageService.createMessage(
+      this.messageTheme,
+      this.MessageBody,
+      this.SendDate)
+      .subscribe((response: string) => {
+        this.messageService.showMessage(response, "OK");
+        this.messageForm.reset();
+      });
+  }
 }

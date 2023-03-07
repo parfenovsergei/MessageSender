@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup , FormControl, Validators , FormGroupDirective } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginResponse } from 'src/app/models/loginResponse';
+import { LoginResponse } from 'src/app/response/loginResponse';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({

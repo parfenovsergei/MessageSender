@@ -3,7 +3,7 @@ import { FormGroup , FormControl, Validators , FormGroupDirective } from '@angul
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
-import { RegisterResponse } from 'src/app/models/registerResponse'
+import { RegisterResponse } from 'src/app/response/registerResponse'
 
 @Component({
   selector: 'app-register',

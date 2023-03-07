@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RegisterResponse } from 'src/app/models/registerResponse'
-import { LoginResponse } from '../models/loginResponse';
+import { RegisterResponse } from 'src/app/response/registerResponse'
+import { LoginResponse } from '../response/loginResponse';
 
 @Injectable({
   providedIn: 'root'
