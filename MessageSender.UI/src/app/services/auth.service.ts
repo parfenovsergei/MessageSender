@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { RegisterResponse } from 'src/app/models/registerResponse'
+import { LoginResponse } from '../models/loginResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +16,8 @@ export class AuthService {
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
 
-  registration(email: string, password: string, confirmPassword: string) : Observable<any>{
-    return this.http.post(
+  registration(email: string, password: string, confirmPassword: string) : Observable<RegisterResponse>{
+    return this.http.post<RegisterResponse>(
       (`${environment.apiUrl}/user/register`),
       {
         Email: email,
@@ -26,8 +28,8 @@ export class AuthService {
     );
   }
 
-  login(email: string, password: string) : Observable<any> {
-    return this.http.post(
+  login(email: string, password: string) : Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(
       (`${environment.apiUrl}/user/login`),
       {
         Email: email,

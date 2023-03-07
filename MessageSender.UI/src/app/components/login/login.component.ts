@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup , FormControl, Validators , FormGroupDirective } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LoginResponse } from 'src/app/models/loginResponse';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -10,7 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private authService: AuthService){
+  constructor(private authService: AuthService, private router: Router){
     this.loginForm = new FormGroup({
       "Email": new FormControl("", [
         Validators.required,
@@ -22,24 +24,29 @@ export class LoginComponent {
     });
   }
 
-  get email()
-  {
+  get email(){
     return this.loginForm.controls["Email"].value;
   }
 
-  get password()
-  {
+  get password(){
     return this.loginForm.controls["Password"].value;
   }
+
   login(){
     this.authService
       .login(
         this.email,
         this.password)
-      .subscribe((token: string) => 
-        {
-          localStorage.setItem("authToken", token);
-          this.authService.showMessage("You have successfully logged in", "OK");
-        })
+      .subscribe((response: LoginResponse) => 
+      {
+        if(response.token != null){
+          localStorage.setItem("Token", response.token);
+          this.authService.showMessage(response.message, "OK");
+          this.router.navigate(['message']);
+        }
+        else
+          this.authService.showMessage(response.message, "OK");
+          this.loginForm = new FormGroup(null);
+      });
   }
 }

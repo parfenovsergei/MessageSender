@@ -3,6 +3,7 @@ import { FormGroup , FormControl, Validators , FormGroupDirective } from '@angul
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { RegisterResponse } from 'src/app/models/registerResponse'
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
-  
+
   constructor(
     private authService: AuthService,
     private router: Router
@@ -37,18 +38,15 @@ export class RegisterComponent implements OnInit {
 
   }
 
-  get email()
-  {
+  get email(){
     return this.registerForm.controls["Email"].value;
   }
 
-  get password()
-  {
+  get password(){
     return this.registerForm.controls["Password"].value;
   }
 
-  get confirmPassword()
-  {
+  get confirmPassword(){
     return this.registerForm.controls["ConfirmPassword"].value;
   }
 
@@ -58,7 +56,14 @@ export class RegisterComponent implements OnInit {
         this.email,
         this.password,
         this.confirmPassword)
-      .subscribe((result: string) => (this.authService.showMessage(result, "OK"))),
-  this.registerForm = new FormGroup(null);
+      .subscribe((response: RegisterResponse) => {
+        if(response.isRegister){
+          this.authService.showMessage(response.message, "OK");
+          this.router.navigate(['login']);
+        }
+        else{
+          this.authService.showMessage(response.message, "OK");
+        }
+      })
   }
 }
