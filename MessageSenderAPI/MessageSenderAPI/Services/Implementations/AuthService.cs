@@ -1,6 +1,7 @@
 ﻿using MessageSenderAPI.Domain.Enums;
 using MessageSenderAPI.Domain.Helpers;
 using MessageSenderAPI.Domain.Models;
+using MessageSenderAPI.Domain.Response;
 using MessageSenderAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -21,8 +22,9 @@ namespace MessageSenderAPI.Services.Implementations
             _configuration = configuration;
         }
 
-        public async Task<string> RegisterAsync(User registerUser)
+        public async Task<RegisterResponse> RegisterAsync(User registerUser)
         {
+            var response = new RegisterResponse();
             if (!IsExist(registerUser.Email))
             {
                 var salt = HashHelper.GenerateSalt();
@@ -37,24 +39,33 @@ namespace MessageSenderAPI.Services.Implementations
                 };
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
-                return "Registration completed successfully!";
+                response.IsRegister = true;
+                response.Message = "Registration completed successfully!";
+                return response;
             }
-            return "User with the same login is already exist";
+            response.IsRegister = false;
+            response.Message = "User with the same login is already exist";
+            return response;
         }
 
-        public async Task<string> LoginAsync(User loginUser)
+        public async Task<LoginResponse> LoginAsync(User loginUser)
         {
+            var response = new LoginResponse();
             if (IsExist(loginUser.Email))
             {
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginUser.Email);
                 if (HashHelper.VerifyPassword(loginUser.Password, user.Password, user.Salt))
                 {
                     string token = CreateToken(user);
-                    return token;
+                    response.Token = token;
+                    response.Message = "You are in.";
+                    return response;
                 }
-                return "Wrong password.";
+                response.Message = "Wrong password.";
+                return response;
             }
-            return "User with the same email is not found.";
+            response.Message = "User with the same email is not found.";
+            return response;
         }
 
         private string CreateToken(User user)
