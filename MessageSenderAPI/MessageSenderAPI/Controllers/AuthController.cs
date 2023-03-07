@@ -7,6 +7,7 @@ using AutoMapper;
 using MessageSenderAPI.Services.Interfaces;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using MessageSenderAPI.Domain.Response;
 
 namespace MessageSenderAPI.Controllers
 {
@@ -23,19 +24,19 @@ namespace MessageSenderAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<string>> RegisterAsync([FromBody] UserRegisterDTO userRegisterDTO)
+        public async Task<RegisterResponse> RegisterAsync([FromBody] UserRegisterDTO userRegisterDTO)
         {
             var user = _mapper.Map<User>(userRegisterDTO);
-            var result = await _authService.RegisterAsync(user);
-            return JsonConvert.SerializeObject(result);
+            var response = await _authService.RegisterAsync(user);
+            return response;
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> LoginAsync([FromBody] UserLoginDTO userLoginDTO)
+        public async Task<LoginResponse> LoginAsync([FromBody] UserLoginDTO userLoginDTO)
         {
             var user = _mapper.Map<User>(userLoginDTO);
-            var token = await _authService.LoginAsync(user);
-            return JsonConvert.SerializeObject(token);
+            var response = await _authService.LoginAsync(user);
+            return response;
         }
     }
 }
