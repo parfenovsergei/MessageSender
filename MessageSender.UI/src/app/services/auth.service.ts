@@ -14,12 +14,13 @@ export class AuthService {
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
 
-  registration(email: string, password: string) : Observable<any>{
+  registration(email: string, password: string, confirmPassword: string) : Observable<any>{
     return this.http.post(
       (`${environment.apiUrl}/user/register`),
       {
         Email: email,
-        Password: password
+        Password: password,
+        ConfirmPassword: confirmPassword
       },
       this.httpOptions
     );

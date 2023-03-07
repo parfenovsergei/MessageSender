@@ -17,6 +17,12 @@
 					<mat-error *ngIf="registerForm.controls['Password'].hasError('required')">Password is required</mat-error>
 					<mat-error *ngIf="registerForm.controls['Password'].hasError('minlength')">Min password length is 6 symbols</mat-error>
 				</mat-form-field>
+				<mat-form-field class="example-full-width">
+					<mat-label>Confirm Password</mat-label>
+					<input type="password" matInput formControlName="ConfirmPassword" >
+					<mat-error *ngIf="registerForm.controls['ConfirmPassword'].hasError('required')">Confirm Password is required</mat-error>
+					<mat-error *ngIf="registerForm.controls['ConfirmPassword'].hasError('minlength')">Min password length is 6 symbols</mat-error>
+				</mat-form-field>
 				<div class="register-button">
 					<button [disabled]="registerForm.invalid" mat-raised-button color="primary">Register</button>
 				</div>

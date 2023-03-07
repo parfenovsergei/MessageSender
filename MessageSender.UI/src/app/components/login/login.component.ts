@@ -31,7 +31,6 @@ export class LoginComponent {
   {
     return this.loginForm.controls["Password"].value;
   }
-
   login(){
     this.authService
       .login(

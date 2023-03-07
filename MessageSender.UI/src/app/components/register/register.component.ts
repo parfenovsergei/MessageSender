@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup , FormControl, Validators , FormGroupDirective } from '@angular/forms';
 import { Router } from '@angular/router';
+import { catchError } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -8,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
+
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   
@@ -23,8 +25,12 @@ export class RegisterComponent implements OnInit {
         "Password": new FormControl("", [
           Validators.required,
           Validators.minLength(6)
+        ]),
+        "ConfirmPassword": new FormControl("", [
+          Validators.required,
+          Validators.minLength(6)
         ])
-      });
+      })
   }
   
   ngOnInit() {
@@ -41,12 +47,18 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.controls["Password"].value;
   }
 
+  get confirmPassword()
+  {
+    return this.registerForm.controls["ConfirmPassword"].value;
+  }
+
   registration(){
     this.authService
-    .registration(
-      this.email,
-      this.password)
-    .subscribe((result: string) => (this.authService.showMessage(result, "OK")));
-    this.router.navigateByUrl('login')
+      .registration(
+        this.email,
+        this.password,
+        this.confirmPassword)
+      .subscribe((result: string) => (this.authService.showMessage(result, "OK"))),
+  this.registerForm = new FormGroup(null);
   }
 }

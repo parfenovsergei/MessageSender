@@ -15,6 +15,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { MessageComponent } from './components/message/message.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 
 const appRoutes: Routes =[
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -42,7 +44,11 @@ const appRoutes: Routes =[
     ReactiveFormsModule,
     MatCardModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
+    MatDatepickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
