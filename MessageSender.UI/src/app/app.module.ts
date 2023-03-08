@@ -14,16 +14,19 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { MessageComponent } from './components/message/message.component';
+import { MessageComponent } from './components/message/message-create/message.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { TokenInterceptorService } from './services/token-interceptor.service';
+import { MessagesViewComponent } from './components/message/messages-view/messages-view.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 const appRoutes: Routes =[
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
-  { path: 'message', component: MessageComponent}
+  { path: 'message', component: MessageComponent},
+  { path: 'messages', component: MessagesViewComponent}
 ];
 
 @NgModule({
@@ -32,7 +35,8 @@ const appRoutes: Routes =[
     ToolbarComponent,
     LoginComponent,
     RegisterComponent,
-    MessageComponent
+    MessageComponent,
+    MessagesViewComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +53,8 @@ const appRoutes: Routes =[
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule, 
+    MatDividerModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}

@@ -3,6 +3,7 @@ import { Injectable, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
+import { Message } from '../models/message';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,11 @@ export class MessageService {
       );
     }
 
-    showMessage(message: string, action: string){
-      this.snackBar.open(message, action);
-    }
+  myMessages() : Observable<Message[]>{
+    return this.http.get<Message[]>(`${environment.apiUrl}/messages`);
+  }
+
+  showMessage(message: string, action: string){
+    this.snackBar.open(message, action);
+  }
 }

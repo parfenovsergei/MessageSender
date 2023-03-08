@@ -4,7 +4,7 @@ import { max } from 'rxjs';
 import { MessageService } from 'src/app/services/message.service';
 
 @Component({
-  selector: 'app-message',
+  selector: 'app-message-create',
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.css']
 })
