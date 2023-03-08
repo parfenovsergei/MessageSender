@@ -41,6 +41,7 @@ export class LoginComponent {
       {
         if(response.token != null){
           localStorage.setItem("Token", response.token);
+          this.authService.decodeToken(response.token);
           this.authService.showMessage(response.message, "OK");
           this.router.navigate(['message']);
         }

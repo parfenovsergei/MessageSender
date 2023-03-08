@@ -5,6 +5,9 @@ import { environment } from 'src/environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RegisterResponse } from 'src/app/response/registerResponse'
 import { LoginResponse } from '../response/loginResponse';
+import { User } from '../models/user';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +16,17 @@ export class AuthService {
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
+  helper = new JwtHelperService();
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
+  currentUser: User = {
+    email: null!,
+    role: null!
+  };
+
+  constructor(
+    private http: HttpClient, 
+    private snackBar: MatSnackBar,
+    private router: Router) { }
 
   registration(email: string, password: string, confirmPassword: string) : Observable<RegisterResponse>{
     return this.http.post<RegisterResponse>(
@@ -37,6 +49,26 @@ export class AuthService {
       },
       this.httpOptions
     )
+  }
+
+  logout() {
+    this.currentUser = {
+      email: null!,
+      role: null!,
+    }; 
+   localStorage.removeItem('Token');
+   this.router.navigate(['login']);
+ }
+
+  loggedIn(): boolean {
+    const token = localStorage.getItem('Token');
+    return !this.helper.isTokenExpired(token);
+  }
+
+  decodeToken(token: string){
+    const decodeToken = this.helper.decodeToken(token);
+    this.currentUser.email = decodeToken.email;
+    this.currentUser.role = decodeToken.role;
   }
 
   showMessage(message: string, action: string){

@@ -3,9 +3,11 @@
         <span>Message Sender</span>
         <button mat-raised-button routerLink="message">Create message</button>
         <button mat-raised-button>My message</button>
+        <button *ngIf="isAdmin()" mat-raised-button>All messages</button>
     </div>
     <div>
-        <button mat-raised-button routerLink="login">Login</button>
-        <button mat-raised-button routerLink="register">Register</button>
+        <button *ngIf="!isAuth()" mat-raised-button routerLink="login">Login</button>
+        <button *ngIf="!isAuth()" mat-raised-button routerLink="register">Register</button>
+        <button *ngIf="isAuth()" mat-raised-button (click)="logout()">Logout</button>
     </div>
 </mat-toolbar>
