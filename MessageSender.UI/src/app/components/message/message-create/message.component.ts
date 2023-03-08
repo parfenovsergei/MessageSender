@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup , FormControl, Validators , FormGroupDirective } from '@angular/forms';
 import { max } from 'rxjs';
 import { MessageService } from 'src/app/services/message.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-message-create',
@@ -14,7 +16,10 @@ export class MessageComponent implements OnInit{
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
 
-  constructor(private messageService: MessageService){
+  constructor(
+    private messageService: MessageService,
+    private router: Router,
+    private authService: AuthService){
     this.messageForm = new FormGroup({
       "MessageTheme": new FormControl("", [
         Validators.required
@@ -30,6 +35,9 @@ export class MessageComponent implements OnInit{
   }
 
   ngOnInit() {
+    if(!this.authService.loggedIn()){
+      this.router.navigate(['login']);
+    }
     this.maxDate.setDate(this.maxDate.getDate() + 365);
   }
 

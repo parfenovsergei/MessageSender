@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Message } from 'src/app/models/message';
 import { MessageService } from 'src/app/services/message.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-messages-view',
@@ -11,9 +12,15 @@ import { MessageService } from 'src/app/services/message.service';
 export class MessagesViewComponent implements OnInit{
   messages: Message[] = [];
   
-  constructor(private messageService: MessageService, private router: Router){}
+  constructor(
+    private messageService: MessageService, 
+    private router: Router,
+    private authService: AuthService){}
 
   ngOnInit(){
+    if(!this.authService.loggedIn()){
+      this.router.navigate(['login']);
+    }
     this.getMessages();
   }
 

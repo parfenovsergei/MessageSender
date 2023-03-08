@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'src/app/services/message.service';
 import { Message } from 'src/app/models/message';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-message-edit',
@@ -19,9 +20,13 @@ export class MessageEditComponent implements OnInit{
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private messageService: MessageService){}
+    private messageService: MessageService,
+    private authService: AuthService){}
 
   ngOnInit() : void{
+    if(!this.authService.loggedIn()){
+      this.router.navigate(['login']);
+    }
     this.id = this.route.snapshot.params['id'];
     this.getMessageById();
     this.messageForm = new FormGroup({
