@@ -30,10 +30,34 @@ export class MessageService {
         },
         this.httpOptions
       );
-    }
+  }
 
   myMessages() : Observable<Message[]>{
     return this.http.get<Message[]>(`${environment.apiUrl}/messages`);
+  }
+
+  deleteMessage(id: number) : Observable<string>{
+    return this.http.delete<string>(`${environment.apiUrl}/messages/${id}`);
+  }
+
+  find(id: number) : Observable<Message>{
+    return this.http.get<Message>(`${environment.apiUrl}/messages/${id}`);
+  }
+
+  editMessage(
+    id: number,
+    messageTheme: string,
+    messageBody: string,
+    sendDate: Date) : Observable<string>{
+      return this.http.put<string>(
+        (`${environment.apiUrl}/messages/${id}`),
+        {
+          MessageTheme: messageTheme,
+          MessageBody: messageBody,
+          SendDate: sendDate
+        },
+        this.httpOptions
+      );
   }
 
   showMessage(message: string, action: string){

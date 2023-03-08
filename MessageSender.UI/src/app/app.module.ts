@@ -22,13 +22,15 @@ import { MessagesViewComponent } from './components/message/messages-view/messag
 import { MatDividerModule } from '@angular/material/divider';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { JwtModule } from '@auth0/angular-jwt';
+import { MessageEditComponent } from './components/message/message-edit/message-edit.component';
 
 const appRoutes: Routes =[
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'message', component: MessageComponent},
-  { path: 'messages', component: MessagesViewComponent}
+  { path: 'messages', component: MessagesViewComponent},
+  { path: 'message/:id', component: MessageEditComponent}
 ];
 
 @NgModule({
@@ -38,7 +40,8 @@ const appRoutes: Routes =[
     LoginComponent,
     RegisterComponent,
     MessageComponent,
-    MessagesViewComponent
+    MessagesViewComponent,
+    MessageEditComponent
   ],
   imports: [
     BrowserModule,

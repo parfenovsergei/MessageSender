@@ -17,8 +17,8 @@
                     <mat-divider></mat-divider>
                 </mat-card-content>
                 <mat-card-actions class="cardActions">
-                    <button mat-button>Edit</button>
-                    <button mat-button>Delete</button>
+                    <button *ngIf="!item.isSend" mat-button [routerLink]="['/message', item.id]" >Edit</button>
+                    <button mat-button (click)="deleteMessage(item.id)">Delete</button>
                 </mat-card-actions>
             </mat-card>
         </div>

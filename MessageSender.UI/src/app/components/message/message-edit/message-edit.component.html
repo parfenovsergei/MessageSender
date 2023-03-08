@@ -1,0 +1,40 @@
+<div class="main-div">
+	<mat-card class="messageCard">
+		<mat-card-header class="headerCard">
+			<h2>Edit message</h2>
+		</mat-card-header>
+		<mat-card-content>
+			<form class="example-form" [formGroup]="messageForm" (ngSubmit)="editMessage()">
+				<mat-form-field class="example-full-width">
+					<mat-label>Message theme</mat-label>
+					<input matInput type="text" formControlName="MessageTheme" [(ngModel)]="message.messageTheme">
+					<mat-error *ngIf="messageForm.controls['MessageTheme'].hasError('required')">Message theme is required</mat-error>
+				</mat-form-field>
+				<mat-form-field class="example-full-width">
+					<mat-label>Message</mat-label>
+					<textarea type="text" matInput formControlName="MessageBody" [(ngModel)]="message.messageBody"></textarea>
+					<mat-error *ngIf="messageForm.controls['MessageBody'].hasError('required')">Message is required</mat-error>
+                    <mat-error *ngIf="messageForm.controls['MessageBody'].hasError('maxlength')">Message max size is 1000</mat-error>
+				</mat-form-field>
+				<mat-form-field>
+					<input matInput
+						placeholder= "Select date and time"
+						[ngxMatDatetimePicker]="picker"
+						formControlName = "SendDate"
+                        [(ngModel)]="message.sendDate"
+						[min]="minDate"
+						[max]="maxDate"
+					>
+					<mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+					<ngx-mat-datetime-picker #picker
+						[touchUi]="true">
+					</ngx-mat-datetime-picker>
+					<mat-error *ngIf="messageForm.controls['SendDate'].hasError('required')">Date is required</mat-error>
+				</mat-form-field>
+				<div class="create-button">
+					<button [disabled]="messageForm.invalid" mat-raised-button color="primary">Edit message</button>
+				</div>
+			</form>
+		</mat-card-content>	
+	</mat-card>
+</div>
