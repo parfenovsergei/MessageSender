@@ -32,6 +32,14 @@ namespace MessageSenderAPI.Controllers
             return messagesViewDto;
         }
 
+        [HttpGet("messages/{id}")]
+        public async Task<MessageViewDTO> GetMessageByIdAsync(int id)
+        {
+            var message = await _messageService.GetMessageByIdAsync(id);
+            var messageViewDto = _mapper.Map<MessageViewDTO>(message);
+            return messageViewDto;
+        }
+
         [HttpPost("messages")]
         public async Task<ActionResult<string>> CreateMessageAsync([FromBody] MessageDTO messageDTO)
         {
