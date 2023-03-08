@@ -12,6 +12,7 @@ namespace MessageSenderAPI.AutoMapper
             CreateMap<UserLoginDTO, User>();
             CreateMap<Message, MessageViewDTO>();
             CreateMap<MessageDTO, Message>();
+            CreateMap<User, UserDTO>();
         }
     }
 }
