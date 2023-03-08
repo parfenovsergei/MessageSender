@@ -1,5 +1,19 @@
-<div class="main-title">
+<div *ngIf="!isAdmin()" class="main-title">
     <h2>My messages</h2>
+</div>
+<div *ngIf="isAdmin()" class="main-title">
+    <h2>Messages</h2>
+</div>
+<div *ngIf="isAdmin()" class="selecter">
+    <h4>Choose user</h4>
+    <mat-form-field appearance="fill">
+        <mat-label>Users</mat-label>
+        <mat-select [(value)]="selectedUser" (selectionChange)="changeSelectedUser()">
+            <mat-option *ngFor="let user of users" [value]="user.id">
+            {{user.email}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
 </div>
 <div class="main-div"> 
     <div fxLayout="row wrap" fxLayoutGap="12px grid">

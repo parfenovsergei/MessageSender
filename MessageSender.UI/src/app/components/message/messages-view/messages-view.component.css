@@ -19,3 +19,7 @@
     display: flex;
     justify-content: space-between;
 }
+
+.selecter{
+    margin-left: 40px;
+}

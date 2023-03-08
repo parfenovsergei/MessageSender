@@ -23,6 +23,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { JwtModule } from '@auth0/angular-jwt';
 import { MessageEditComponent } from './components/message/message-edit/message-edit.component';
+import { MatSelectModule } from '@angular/material/select';
 
 const appRoutes: Routes =[
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -60,6 +61,7 @@ const appRoutes: Routes =[
     NgxMatNativeDateModule,
     MatDatepickerModule, 
     MatDividerModule,
+    MatSelectModule,
     FlexLayoutModule,
     JwtModule.forRoot({
       config: {

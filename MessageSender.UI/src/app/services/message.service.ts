@@ -36,6 +36,10 @@ export class MessageService {
     return this.http.get<Message[]>(`${environment.apiUrl}/messages`);
   }
 
+  getUserMessagesById(id: number) : Observable<Message[]>{
+    return this.http.get<Message[]>(`${environment.apiUrl}/admin/users/${id}/messages`);
+  }
+
   deleteMessage(id: number) : Observable<string>{
     return this.http.delete<string>(`${environment.apiUrl}/messages/${id}`);
   }
