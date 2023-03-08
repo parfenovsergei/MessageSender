@@ -26,19 +26,10 @@ namespace MessageSenderAPI.Controllers
         [HttpGet("messages")]
         public async Task<List<MessageViewDTO>> GetMessagesAsync()
         {
-            if (HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Role).Value == Role.User.ToString())
-            {
-                var userEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
-                var messages = await _messageService.GetMessagesAsync(userEmail);
-                var messagesViewDto = _mapper.Map<List<MessageViewDTO>>(messages);
-                return messagesViewDto;
-            }
-            else
-            {
-                var messages = await _messageService.GetAllMessagesAsync();
-                var messagesViewDto = _mapper.Map<List<MessageViewDTO>>(messages);
-                return messagesViewDto;
-            }
+            var userEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
+            var messages = await _messageService.GetMessagesAsync(userEmail);
+            var messagesViewDto = _mapper.Map<List<MessageViewDTO>>(messages);
+            return messagesViewDto;
         }
 
         [HttpPost("messages")]
