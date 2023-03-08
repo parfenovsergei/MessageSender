@@ -42,6 +42,12 @@ namespace MessageSenderAPI.Services.Implementations
             return messages;
         }
 
+        public async Task<Message> GetMessageByIdAsync(int id)
+        {
+            var message = await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
+            return message;
+        }
+
         public async Task<List<Message>> GetMessagesAsync(string userEmail)
         {
             var messages = await _context.Messages
