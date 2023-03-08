@@ -16,7 +16,6 @@ export class AuthService {
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  helper = new JwtHelperService();
 
   currentUser: User = {
     email: null!,
@@ -26,7 +25,8 @@ export class AuthService {
   constructor(
     private http: HttpClient, 
     private snackBar: MatSnackBar,
-    private router: Router) { }
+    private router: Router,
+    private jwtHelper: JwtHelperService) { }
 
   registration(email: string, password: string, confirmPassword: string) : Observable<RegisterResponse>{
     return this.http.post<RegisterResponse>(
@@ -62,13 +62,13 @@ export class AuthService {
 
   loggedIn(): boolean {
     const token = localStorage.getItem('Token');
-    return !this.helper.isTokenExpired(token);
+    return !this.jwtHelper.isTokenExpired(token);
   }
 
   decodeToken(token: string){
-    const decodeToken = this.helper.decodeToken(token);
-    this.currentUser.email = decodeToken.email;
-    this.currentUser.role = decodeToken.role;
+    const payload = this.jwtHelper.decodeToken(token);
+    this.currentUser.email = payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
+    this.currentUser.role = payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
   }
 
   showMessage(message: string, action: string){

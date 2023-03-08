@@ -1,6 +1,7 @@
 export interface Message{
     id: number;
-    theme: string;
-    body: string;
+    messageTheme: string;
+    messageBody: string;
     sendDate: Date;
+    isSend: boolean;
 }

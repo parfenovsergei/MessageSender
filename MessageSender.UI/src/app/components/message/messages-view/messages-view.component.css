@@ -1,0 +1,21 @@
+.main-title{
+    display: flex;
+    justify-content: center;
+}
+
+.main-div{
+    margin-top: 2%;
+}
+
+.content > mat-card {
+    width: 95%;
+}  
+
+.card{
+    margin-left: 12px;
+}
+
+.send{
+    display: flex;
+    justify-content: space-between;
+}

@@ -20,6 +20,8 @@ import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerMod
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { MessagesViewComponent } from './components/message/messages-view/messages-view.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { JwtModule } from '@auth0/angular-jwt';
 
 const appRoutes: Routes =[
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -54,7 +56,13 @@ const appRoutes: Routes =[
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
     MatDatepickerModule, 
-    MatDividerModule
+    MatDividerModule,
+    FlexLayoutModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: request => request as any
+      }
+    })
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}

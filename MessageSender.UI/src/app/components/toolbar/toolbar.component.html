@@ -1,9 +1,9 @@
 <mat-toolbar color="primary" class="navbar">
     <div>
         <span>Message Sender</span>
-        <button mat-raised-button routerLink="message">Create message</button>
-        <button mat-raised-button>My message</button>
-        <button *ngIf="isAdmin()" mat-raised-button>All messages</button>
+        <button *ngIf="isAuth()" mat-raised-button routerLink="message">Create message</button>
+        <button *ngIf="isAuth()" mat-raised-button routerLink="messages">My message</button>
+        <button *ngIf="isAdmin() && isAuth()" mat-raised-button>All messages</button>
     </div>
     <div>
         <button *ngIf="!isAuth()" mat-raised-button routerLink="login">Login</button>

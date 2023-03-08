@@ -9,7 +9,7 @@ import { MessageService } from 'src/app/services/message.service';
 })
 export class MessagesViewComponent implements OnInit{
   messages: Message[] = [];
-
+  
   constructor(private messageService: MessageService){}
 
   ngOnInit(){
@@ -18,5 +18,6 @@ export class MessagesViewComponent implements OnInit{
 
   getMessages() {
     this.messageService.myMessages()
+      .subscribe(result => this.messages = result);
   }
 }

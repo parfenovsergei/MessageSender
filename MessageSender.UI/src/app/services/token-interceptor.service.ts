@@ -9,7 +9,7 @@ export class TokenInterceptorService implements HttpInterceptor{
 
   constructor() { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
-    const token = localStorage.getItem("Token");
+    const token = localStorage.getItem('Token');
 
     if(token){
       request = request.clone({

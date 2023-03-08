@@ -1,18 +1,26 @@
-<div class="main-div">
-    <div class="main-title">
-        <h2>My messages</h2>
+<div class="main-title">
+    <h2>My messages</h2>
+</div>
+<div class="main-div"> 
+    <div fxLayout="row wrap" fxLayoutGap="12px grid">
+        <div class="content" fxFlex="50%" *ngFor="let item of messages">
+            <mat-card class="card">
+                <mat-card-header class="card-header">
+                    <mat-card-title>{{item.messageTheme}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="card-content">
+                    <p>{{item.messageBody}}</p>
+                    <div class="send">
+                        <span>Date to send: {{item.sendDate | date:'medium'}}</span>
+                        <span>Is send: {{item.isSend}}</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                </mat-card-content>
+                <mat-card-actions class="cardActions">
+                    <button mat-button>Edit</button>
+                    <button mat-button>Delete</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
     </div>
-	<mat-card class="messageCard" *ngFor="let message in messages">
-		<mat-card-header class="headerCard">
-            <mat-card-title>{{message.theme}}</mat-card-title>
-		</mat-card-header>
-		<mat-card-content>
-			<p>{{message.body}}</p>
-            <mat-divider></mat-divider>
-		</mat-card-content>
-        <mat-card-actions>
-            <button mat-button>Edit</button>
-            <button mat-button>Delete</button>
-        </mat-card-actions>
-	</mat-card>
 </div>
