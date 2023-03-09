@@ -4,7 +4,6 @@ namespace MessageSenderAPI.Domain.ModelsDTO
 {
     public class MessageDTO
     {
-        [Required(ErrorMessage = "Message theme is required")]
         [StringLength(100, ErrorMessage = "Max length of message theme is 100")]
         public string MessageTheme { get; set; }
 
