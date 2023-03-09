@@ -6,6 +6,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Role } from 'src/app/enums/role';
 import { UserSelect } from 'src/app/models/userSelect';
 import { UserService } from 'src/app/services/user.service';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { DialogComponent } from '../../dialog/dialog.component';
 
 @Component({
   selector: 'app-messages-view',
@@ -21,7 +23,8 @@ export class MessagesViewComponent implements OnInit{
     private messageService: MessageService, 
     private router: Router,
     private authService: AuthService,
-    private userService: UserService){}
+    private userService: UserService,
+    private matDialog: MatDialog){}
 
   ngOnInit(){
     if(!this.authService.loggedIn()){
@@ -54,5 +57,17 @@ export class MessagesViewComponent implements OnInit{
   changeSelectedUser(){
     this.messageService.getUserMessagesById(this.selectedUser)
       .subscribe(result => this.messages = result);
+  }
+
+  openDeleteDialog(id: number){
+    let dialogRef =  this.matDialog.open(DialogComponent, {
+      width: '200px',
+      height: '120px',
+      data: id
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.deleteMessage(result);
+    })
   }
 }

@@ -1,7 +1,7 @@
 <div class="main-div">
 	<mat-card>
 		<mat-card-header class="headerCard">
-			<h2>Registeration</h2>
+			<h2>Registration</h2>
 		</mat-card-header>
 		<mat-card-content class="registerCard">
 			<form class="example-form" [formGroup]="registerForm" (ngSubmit)="registration()">
@@ -24,7 +24,7 @@
 					<mat-error *ngIf="registerForm.controls['ConfirmPassword'].hasError('minlength')">Min password length is 6 symbols</mat-error>
 				</mat-form-field>
 				<div class="register-button">
-					<button [disabled]="registerForm.invalid" mat-raised-button color="primary">Register</button>
+					<button [disabled]="registerForm.invalid" mat-raised-button color="warn">Register</button>
 				</div>
 			</form>
 		</mat-card-content>	

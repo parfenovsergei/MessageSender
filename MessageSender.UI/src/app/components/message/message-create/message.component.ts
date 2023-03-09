@@ -21,9 +21,7 @@ export class MessageComponent implements OnInit{
     private router: Router,
     private authService: AuthService){
     this.messageForm = new FormGroup({
-      "MessageTheme": new FormControl("", [
-        Validators.required
-     ]),
+      "MessageTheme": new FormControl(""),
       "MessageBody": new FormControl("", [
         Validators.required,
         Validators.maxLength(1000)

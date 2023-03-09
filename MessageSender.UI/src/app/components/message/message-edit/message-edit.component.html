@@ -8,7 +8,6 @@
 				<mat-form-field class="example-full-width">
 					<mat-label>Message theme</mat-label>
 					<input matInput type="text" formControlName="MessageTheme" [(ngModel)]="message.messageTheme">
-					<mat-error *ngIf="messageForm.controls['MessageTheme'].hasError('required')">Message theme is required</mat-error>
 				</mat-form-field>
 				<mat-form-field class="example-full-width">
 					<mat-label>Message</mat-label>

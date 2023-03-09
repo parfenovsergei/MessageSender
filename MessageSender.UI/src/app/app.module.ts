@@ -24,6 +24,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { JwtModule } from '@auth0/angular-jwt';
 import { MessageEditComponent } from './components/message/message-edit/message-edit.component';
 import { MatSelectModule } from '@angular/material/select';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 const appRoutes: Routes =[
   { path: '', pathMatch: 'full', redirectTo: 'login' },
@@ -42,26 +45,28 @@ const appRoutes: Routes =[
     RegisterComponent,
     MessageComponent,
     MessagesViewComponent,
-    MessageEditComponent
+    MessageEditComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes),
+    HttpClientModule,
     MatToolbarModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule, 
-    ReactiveFormsModule,
+    MatInputModule,MatDatepickerModule, 
+    MatDividerModule,
+    MatSelectModule,
+    MatDialogModule,
+    MatIconModule,
     MatCardModule,
-    HttpClientModule,
     MatSnackBarModule,
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatNativeDateModule,
-    MatDatepickerModule, 
-    MatDividerModule,
-    MatSelectModule,
+    ReactiveFormsModule,
     FlexLayoutModule,
     JwtModule.forRoot({
       config: {
