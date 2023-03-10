@@ -19,7 +19,7 @@ namespace MessageSenderAPI.Services.Implementations
             {
                 MessageTheme = message.MessageTheme,
                 MessageBody = message.MessageBody,
-                SendDate = message.SendDate,
+                SendDate = message.SendDate.ToLocalTime(),
                 Owner = user,
                 IsSend = false
             };
