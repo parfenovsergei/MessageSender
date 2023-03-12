@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable } from 'rxjs';
+
 import { environment } from 'src/environments/environment';
 import { Message } from '../models/message';
 

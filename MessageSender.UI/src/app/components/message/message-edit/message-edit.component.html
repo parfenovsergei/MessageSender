@@ -4,7 +4,7 @@
 			<h2>Edit message</h2>
 		</mat-card-header>
 		<mat-card-content>
-			<form class="example-form" [formGroup]="messageForm" (ngSubmit)="editMessage()">
+			<form [formGroup]="messageForm" (ngSubmit)="editMessage()">
 				<mat-form-field class="example-full-width">
 					<mat-label>Message theme</mat-label>
 					<input matInput type="text" formControlName="MessageTheme" [(ngModel)]="message.messageTheme">

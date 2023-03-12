@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup , FormControl, Validators , FormGroupDirective } from '@angular/forms';
+import { FormGroup , FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { LoginResponse } from 'src/app/response/loginResponse';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -14,34 +15,50 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router){
     this.loginForm = new FormGroup({
-      "Email": new FormControl("", [
+      Email: new FormControl("", [
         Validators.required,
         Validators.email
       ]),
-      "Password": new FormControl("", [
+      Password: new FormControl("", [
         Validators.required
       ])
     });
   }
 
   get email(){
-    return this.loginForm.controls["Email"].value;
+    return this.loginForm.controls["Email"];
   }
 
   get password(){
-    return this.loginForm.controls["Password"].value;
+    return this.loginForm.controls["Password"];
+  }
+
+  getEmailErrorMessage(){
+    if(this.email.hasError('required')){
+      return 'Email is required';
+    }
+    else if(this.email.hasError('email')){
+      return 'Incorrect email format';
+    }
+    return '';
+  }
+
+  getPasswordErrorMessage(){
+    if(this.password.hasError('required')){
+      return 'Password is required';
+    }
+    return '';
   }
 
   login(){
     this.authService
       .login(
-        this.email,
-        this.password)
+        this.email.value,
+        this.password.value)
       .subscribe((response: LoginResponse) => 
       {
         if(response.token != null){
-          localStorage.setItem("Token", response.token);
-          this.authService.decodeToken(response.token);
+          this.authService.getAndDecodeToken(response.token);
           this.authService.showMessage(response.message, "OK");
           this.router.navigate(['message']);
         }

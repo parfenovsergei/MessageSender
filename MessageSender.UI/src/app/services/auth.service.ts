@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Observable } from 'rxjs';
+
 import { RegisterResponse } from 'src/app/response/registerResponse'
 import { LoginResponse } from '../response/loginResponse';
 import { User } from '../models/user';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +66,8 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 
-  decodeToken(token: string){
+  getAndDecodeToken(token: string){
+    localStorage.setItem("Token", token);
     const payload = this.jwtHelper.decodeToken(token);
     this.currentUser.email = payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
     this.currentUser.role = payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];

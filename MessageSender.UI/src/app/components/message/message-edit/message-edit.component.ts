@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { MessageService } from 'src/app/services/message.service';
-import { Message } from 'src/app/models/message';
 import { AuthService } from 'src/app/services/auth.service';
+import { Message } from 'src/app/models/message';
+const daysInAYear = 365;
 
 @Component({
   selector: 'app-message-edit',
@@ -30,16 +32,16 @@ export class MessageEditComponent implements OnInit{
     this.id = this.route.snapshot.params['id'];
     this.getMessageById();
     this.messageForm = new FormGroup({
-      "MessageTheme": new FormControl(""),
-      "MessageBody": new FormControl("", [
+      MessageTheme: new FormControl(""),
+      MessageBody: new FormControl("", [
         Validators.required,
         Validators.maxLength(1000)
       ]),
-      "SendDate": new FormControl("", [
+      SendDate: new FormControl("", [
         Validators.required
       ])
     });
-    this.maxDate.setDate(this.maxDate.getDate() + 365);
+    this.maxDate.setDate(this.maxDate.getDate() + daysInAYear);
   }
 
   getMessageById(){
@@ -50,23 +52,40 @@ export class MessageEditComponent implements OnInit{
   }
 
   get MessageTheme(){
-    return this.messageForm.controls['MessageTheme'].value;
+    return this.messageForm.controls['MessageTheme'];
   }
 
   get MessageBody(){
-    return this.messageForm.controls['MessageBody'].value;
+    return this.messageForm.controls['MessageBody'];
   }
 
   get SendDate(){
-    return this.messageForm.controls['SendDate'].value;
+    return this.messageForm.controls['SendDate'];
+  }
+
+  getBodyErrorMessage(){
+    if(this.MessageBody.hasError('required')){
+      return 'Message is required'
+    }
+    else if(this.MessageBody.hasError('maxlength')){
+      return 'Max message length 1000 symbols'
+    }
+    return '';
+  }
+
+  getDateErrorMessage(){
+    if(this.SendDate.hasError('required')){
+      return 'Date is required';
+    }
+    return ''
   }
 
   editMessage(){
     this.messageService.editMessage(
       this.id,
-      this.MessageTheme,
-      this.MessageBody,
-      this.SendDate)
+      this.MessageTheme.value,
+      this.MessageBody.value,
+      this.SendDate.value)
       .subscribe((response: string) => {
         this.messageService.showMessage(response, "OK");
         this.router.navigate(['messages']);

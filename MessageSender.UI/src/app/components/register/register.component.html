@@ -4,27 +4,28 @@
 			<h2>Registration</h2>
 		</mat-card-header>
 		<mat-card-content class="registerCard">
-			<form class="example-form" [formGroup]="registerForm" (ngSubmit)="registration()">
+			<form [formGroup]="registerForm" (ngSubmit)="registration()">
 				<mat-form-field class="example-full-width">
 					<mat-label>Email</mat-label>
 					<input matInput formControlName="Email"  name="email">
-					<mat-error *ngIf="registerForm.controls['Email'].hasError('required')">Email is required</mat-error>
-					<mat-error *ngIf="registerForm.controls['Email'].hasError('email')">Incorrect email format</mat-error>
+					<mat-error *ngIf="registerForm.invalid">{{getEmailErrorMessage()}}</mat-error>
 				</mat-form-field>
 				<mat-form-field class="example-full-width">
 					<mat-label>Password</mat-label>
 					<input type="password" matInput formControlName="Password" >
-					<mat-error *ngIf="registerForm.controls['Password'].hasError('required')">Password is required</mat-error>
-					<mat-error *ngIf="registerForm.controls['Password'].hasError('minlength')">Min password length is 6 symbols</mat-error>
+					<mat-error *ngIf="registerForm.invalid">{{getPasswordErrorMessage()}}</mat-error>
 				</mat-form-field>
 				<mat-form-field class="example-full-width">
 					<mat-label>Confirm Password</mat-label>
-					<input type="password" matInput formControlName="ConfirmPassword" >
-					<mat-error *ngIf="registerForm.controls['ConfirmPassword'].hasError('required')">Confirm Password is required</mat-error>
-					<mat-error *ngIf="registerForm.controls['ConfirmPassword'].hasError('minlength')">Min password length is 6 symbols</mat-error>
+					<input type="password" matInput formControlName="ConfirmPassword">
+					<mat-error *ngIf="registerForm.invalid">{{getConfirmPasswordErrorMessage()}}</mat-error>
 				</mat-form-field>
 				<div class="register-button">
-					<button [disabled]="registerForm.invalid" mat-raised-button color="warn">Register</button>
+					<button [disabled]="registerForm.invalid" 
+							mat-raised-button 
+							color="warn">
+						Register
+					</button>
 				</div>
 			</form>
 		</mat-card-content>	

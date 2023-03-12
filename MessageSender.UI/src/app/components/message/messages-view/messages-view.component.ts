@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Message } from 'src/app/models/message';
-import { MessageService } from 'src/app/services/message.service';
-import { AuthService } from 'src/app/services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+
+import { DialogComponent } from '../../dialog/dialog.component';
 import { Role } from 'src/app/enums/role';
 import { UserSelect } from 'src/app/models/userSelect';
+import { Message } from 'src/app/models/message';
 import { UserService } from 'src/app/services/user.service';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import { DialogComponent } from '../../dialog/dialog.component';
+import { MessageService } from 'src/app/services/message.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-messages-view',
