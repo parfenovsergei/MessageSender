@@ -9,6 +9,8 @@ namespace MessageSenderAPI.Domain.Models
         public string Password { get; set; }
         public string Salt { get; set; }
         public Role Role { get; set; }
+        public bool IsVerifed { get; set; }
+        public int VerifyCode { get; set; }
         public List<Message> Messages { get; set; } = new List<Message>();
     }
 }
