@@ -1,10 +1,12 @@
 ﻿using MessageSenderAPI.Domain.Enums;
 using MessageSenderAPI.Domain.Helpers;
 using MessageSenderAPI.Domain.Models;
+using MessageSenderAPI.Domain.ModelsDTO;
 using MessageSenderAPI.Domain.Response;
 using MessageSenderAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.CodeDom.Compiler;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -16,10 +18,15 @@ namespace MessageSenderAPI.Services.Implementations
     {
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
-        public AuthService(ApplicationDbContext context, IConfiguration configuration) 
+        private readonly IEmailService _emailService;
+        public AuthService(
+            ApplicationDbContext context,
+            IConfiguration configuration,
+            IEmailService emailService) 
         { 
             _context = context;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
         public async Task<RegisterResponse> RegisterAsync(User registerUser)
@@ -36,11 +43,14 @@ namespace MessageSenderAPI.Services.Implementations
                     Password = hashPassword,
                     Salt = salt,
                     Role = Role.User,
+                    IsVerifed = false,
+                    VerifyCode = GenerateVerifyCode()
                 };
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
+                await _emailService.SendVerifyCodeAsync(newUser.Email, newUser.VerifyCode);
                 response.IsRegister = true;
-                response.Message = "Registration completed successfully!";
+                response.Message = "We send six-digit code on your email";
                 return response;
             }
             response.IsRegister = false;
@@ -54,16 +64,43 @@ namespace MessageSenderAPI.Services.Implementations
             if (IsExist(loginUser.Email))
             {
                 var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginUser.Email);
-                if (HashHelper.VerifyPassword(loginUser.Password, user.Password, user.Salt))
-                {
-                    string token = CreateToken(user);
-                    response.Token = token;
-                    response.Message = "You are in.";
+                if (user.IsVerifed) {
+                    if (HashHelper.VerifyPassword(loginUser.Password, user.Password, user.Salt))
+                    {
+                        string token = CreateToken(user);
+                        response.Token = token;
+                        response.Message = "You are in.";
+                        return response;
+                    }
+                    response.Message = "Wrong password.";
                     return response;
                 }
-                response.Message = "Wrong password.";
+                response.Message = "You are not verifed";
                 return response;
             }
+            response.Message = "User with the same email is not found.";
+            return response;
+        }
+
+        public async Task<RegisterResponse> VerifyAsync(UserVerifyDTO userVerifyDTO)
+        {
+            var response = new RegisterResponse();
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userVerifyDTO.Email);
+            if(user != null)
+            {
+                if(userVerifyDTO.VerifyCode == user.VerifyCode)
+                {
+                    user.IsVerifed = true;
+                    await _context.SaveChangesAsync();
+                    response.IsRegister = true;
+                    response.Message = "You verifed!";
+                    return response;
+                }
+                response.IsRegister = false;
+                response.Message = "Inccorect verify code";
+                return response;
+            }
+            response.IsRegister = false;
             response.Message = "User with the same email is not found.";
             return response;
         }
@@ -90,6 +127,12 @@ namespace MessageSenderAPI.Services.Implementations
         {
             var user = _context.Users.FirstOrDefault(u => u.Email == email);
             return user != null;
+        }
+
+        private int GenerateVerifyCode()
+        {
+            Random rnd = new Random();
+            return rnd.Next(100000, 999999);
         }
     }
 }

@@ -38,5 +38,12 @@ namespace MessageSenderAPI.Controllers
             var response = await _authService.LoginAsync(user);
             return response;
         }
+
+        [HttpPost("verify")]
+        public async Task<RegisterResponse> VerifyAsync([FromBody] UserVerifyDTO userVerifyDTO)
+        {
+            var response = await _authService.VerifyAsync(userVerifyDTO);
+            return response;
+        }
     }
 }
