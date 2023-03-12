@@ -10,32 +10,33 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MessageSenderAPI.Controllers
 {
-    [Route("admin")]
     [ApiController]
-    [AuthorizeRoles(Role.Admin)]
-    public class AdminController : ControllerBase
+    [Authorize]
+    public class UserController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IAdminService _adminService;
+        private readonly IUserService _userService;
 
-        public AdminController(IMapper mapper, IAdminService adminService)
+        public UserController(IMapper mapper, IUserService userService)
         {
             _mapper = mapper;
-            _adminService = adminService;
+            _userService = userService;
         }
 
+        [AuthorizeRoles(Role.Admin)]
         [HttpGet("users")]
         public async Task<List<UserDTO>> GetAllUsersAsync()
         {
-            var users = await _adminService.GetAllUsersAsync();
+            var users = await _userService.GetAllUsersAsync();
             var result = _mapper.Map<List<UserDTO>>(users);
             return result;
         }
 
+        [AuthorizeRoles(Role.Admin)]
         [HttpGet("users/{id}/messages")]
         public async Task<List<MessageViewDTO>> GetMessageByUserIdAsync(int id)
         {
-            var messages = await _adminService.GetMessagesByUserIdAsync(id);
+            var messages = await _userService.GetMessagesByUserIdAsync(id);
             var messagesViewDto = _mapper.Map<List<MessageViewDTO>>(messages);
             return messagesViewDto;
         }

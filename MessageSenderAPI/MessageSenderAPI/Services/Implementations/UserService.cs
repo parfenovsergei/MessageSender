@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MessageSenderAPI.Services.Implementations
 {
-    public class AdminService : IAdminService
+    public class UserService : IUserService
     {
         private readonly ApplicationDbContext _context;
-        public AdminService(ApplicationDbContext context)
+        public UserService(ApplicationDbContext context)
         {
             _context = context;
         }
