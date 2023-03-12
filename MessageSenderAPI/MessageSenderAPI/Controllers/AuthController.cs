@@ -8,6 +8,8 @@ using MessageSenderAPI.Services.Interfaces;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 using MessageSenderAPI.Domain.Response;
+using MessageSenderAPI.Services.Implementations;
+using MessageSenderAPI.Domain.Request;
 
 namespace MessageSenderAPI.Controllers
 {
@@ -40,9 +42,30 @@ namespace MessageSenderAPI.Controllers
         }
 
         [HttpPost("verify")]
-        public async Task<RegisterResponse> VerifyAsync([FromBody] UserVerifyDTO userVerifyDTO)
+        public async Task<RegisterResponse> VerifyAsync([FromBody] VerifyRequest verifyRequest)
         {
-            var response = await _authService.VerifyAsync(userVerifyDTO);
+            var response = await _authService.VerifyAsync(verifyRequest);
+            return response;
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<ActionResult<string>> ForgotPasswordAsync([FromBody] string email)
+        {
+            var response = await _authService.ForgotPasswordAsync(email);
+            return response;
+        }
+
+        [HttpPost("confirm-code")]
+        public async Task<ActionResult<string>> ConfirmCodeAsync([FromBody] VerifyRequest verifyRequest)
+        {
+            var response = await _authService.ConfirmCodeAsync(verifyRequest);
+            return response;
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<ActionResult<string>> ResetPasswordAsync([FromBody] ResetPasswordRequest resetPasswordRequest)
+        {
+            var response = await _authService.ResetPasswordAsync(resetPasswordRequest);
             return response;
         }
     }

@@ -1,9 +1,10 @@
 ﻿using MessageSenderAPI.Domain.Enums;
 using MessageSenderAPI.Domain.Helpers;
 using MessageSenderAPI.Domain.Models;
-using MessageSenderAPI.Domain.ModelsDTO;
+using MessageSenderAPI.Domain.Request;
 using MessageSenderAPI.Domain.Response;
 using MessageSenderAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.CodeDom.Compiler;
@@ -75,25 +76,25 @@ namespace MessageSenderAPI.Services.Implementations
                     response.Message = "Wrong password.";
                     return response;
                 }
-                response.Message = "You are not verifed";
+                response.Message = "You are not verified";
                 return response;
             }
             response.Message = "User with the same email is not found.";
             return response;
         }
 
-        public async Task<RegisterResponse> VerifyAsync(UserVerifyDTO userVerifyDTO)
+        public async Task<RegisterResponse> VerifyAsync(VerifyRequest verifyRequest)
         {
             var response = new RegisterResponse();
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userVerifyDTO.Email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == verifyRequest.Email);
             if(user != null)
             {
-                if(userVerifyDTO.VerifyCode == user.VerifyCode)
+                if(verifyRequest.VerifyCode == user.VerifyCode)
                 {
                     user.IsVerifed = true;
                     await _context.SaveChangesAsync();
                     response.IsRegister = true;
-                    response.Message = "You verifed!";
+                    response.Message = "You verified!";
                     return response;
                 }
                 response.IsRegister = false;
@@ -103,6 +104,56 @@ namespace MessageSenderAPI.Services.Implementations
             response.IsRegister = false;
             response.Message = "User with the same email is not found.";
             return response;
+        }
+
+        public async Task<string> ForgotPasswordAsync(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user != null)
+            {
+                var code = GenerateVerifyCode();
+                user.VerifyCode = code;
+                await _context.SaveChangesAsync();
+                await _emailService.SendVerifyCodeAsync(email, code);
+                return "Verify code is send on your email";
+            }
+            return "User with the same email is not registred";
+        }
+
+        public async Task<string> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == resetPasswordRequest.Email);
+            if(user != null)
+            {
+                if(user.IsChangingPassword)
+                {
+                    var salt = HashHelper.GenerateSalt();
+                    var hashPassword = HashHelper.HashPassword(resetPasswordRequest.Password, salt);
+                    user.Salt = salt;
+                    user.Password = hashPassword;
+                    user.IsChangingPassword = false;
+                    await _context.SaveChangesAsync();
+                    return "Password changed";
+                }
+                return "You are not verified";
+            }
+            return "User with the same email is not registred";
+        }
+
+        public async Task<string> ConfirmCodeAsync(VerifyRequest verifyRequest)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == verifyRequest.Email);
+            if (user != null)
+            {
+                if (verifyRequest.VerifyCode == user.VerifyCode)
+                {
+                    user.IsChangingPassword = true;
+                    await _context.SaveChangesAsync();
+                    return "Right code";
+                }
+                return "Inccorect code";
+            }
+            return "User with the same email is not registred";
         }
 
         private string CreateToken(User user)
