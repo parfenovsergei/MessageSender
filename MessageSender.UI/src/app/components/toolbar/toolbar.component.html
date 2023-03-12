@@ -1,12 +1,16 @@
 <mat-toolbar color="warn" class="navbar">
-    <div>
-        <span>Message Sender</span>
-        <button *ngIf="isAuth()" mat-raised-button routerLink="message">Create message</button>
-        <button *ngIf="isAuth()" mat-raised-button routerLink="messages">Messages</button>
+    <div class="right-nav">
+        <div>Message Sender</div>
+        <div *ngIf="isAuth()">
+            <button mat-raised-button routerLink="message">Create message</button>
+            <button mat-raised-button routerLink="messages">Messages</button>
+        </div>
     </div>
     <div>
-        <button *ngIf="!isAuth()" mat-raised-button routerLink="login">Login</button>
-        <button *ngIf="!isAuth()" mat-raised-button routerLink="register">Register</button>
+        <div  *ngIf="!isAuth()">
+            <button mat-raised-button routerLink="login">Login</button>
+            <button mat-raised-button routerLink="register">Register</button>
+        </div>
         <button *ngIf="isAuth()" mat-raised-button (click)="logout()">Logout</button>
     </div>
 </mat-toolbar>

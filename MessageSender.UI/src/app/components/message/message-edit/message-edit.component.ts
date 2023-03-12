@@ -15,7 +15,7 @@ const daysInAYear = 365;
 export class MessageEditComponent implements OnInit{
   id!: number;
   message!: Message;
-  messageForm!: FormGroup; 
+  messageForm: FormGroup; 
   public minDate: Date = new Date();
   public maxDate: Date = new Date();
 
@@ -23,7 +23,18 @@ export class MessageEditComponent implements OnInit{
     private route: ActivatedRoute,
     private router: Router,
     private messageService: MessageService,
-    private authService: AuthService){}
+    private authService: AuthService){
+      this.messageForm = new FormGroup({
+        MessageTheme: new FormControl(''),
+        MessageBody: new FormControl('', [
+          Validators.required,
+          Validators.maxLength(1000)
+        ]),
+        SendDate: new FormControl('', [
+          Validators.required
+        ])
+      });
+    }
 
   ngOnInit() : void{
     if(!this.authService.loggedIn()){
@@ -31,16 +42,6 @@ export class MessageEditComponent implements OnInit{
     }
     this.id = this.route.snapshot.params['id'];
     this.getMessageById();
-    this.messageForm = new FormGroup({
-      MessageTheme: new FormControl(""),
-      MessageBody: new FormControl("", [
-        Validators.required,
-        Validators.maxLength(1000)
-      ]),
-      SendDate: new FormControl("", [
-        Validators.required
-      ])
-    });
     this.maxDate.setDate(this.maxDate.getDate() + daysInAYear);
   }
 

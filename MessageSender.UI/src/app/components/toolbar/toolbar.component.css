@@ -3,6 +3,11 @@
     width: 100%;
 }
 
+.right-nav{
+    display: flex;
+    justify-content: start;
+}
+
 button{
     margin-left: 10px;
 }

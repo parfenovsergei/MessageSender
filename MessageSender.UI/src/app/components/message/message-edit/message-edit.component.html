@@ -12,8 +12,7 @@
 				<mat-form-field class="example-full-width">
 					<mat-label>Message</mat-label>
 					<textarea type="text" matInput formControlName="MessageBody" [(ngModel)]="message.messageBody"></textarea>
-					<mat-error *ngIf="messageForm.controls['MessageBody'].hasError('required')">Message is required</mat-error>
-                    <mat-error *ngIf="messageForm.controls['MessageBody'].hasError('maxlength')">Message max size is 1000</mat-error>
+					<mat-error *ngIf="messageForm.invalid">{{getBodyErrorMessage()}}</mat-error>
 				</mat-form-field>
 				<mat-form-field>
 					<input matInput
@@ -28,7 +27,7 @@
 					<ngx-mat-datetime-picker #picker
 						[touchUi]="true">
 					</ngx-mat-datetime-picker>
-					<mat-error *ngIf="messageForm.controls['SendDate'].hasError('required')">Date is required</mat-error>
+					<mat-error *ngIf="messageForm.invalid">{{getDateErrorMessage()}}</mat-error>
 				</mat-form-field>
 				<div class="create-button">
 					<button [disabled]="messageForm.invalid" mat-raised-button color="primary">Edit message</button>

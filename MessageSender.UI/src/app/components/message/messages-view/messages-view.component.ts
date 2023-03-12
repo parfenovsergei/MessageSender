@@ -67,8 +67,9 @@ export class MessagesViewComponent implements OnInit{
       data: id
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.deleteMessage(result);
+    dialogRef.afterClosed()
+      .subscribe(result => {
+        this.deleteMessage(result);
     })
   }
 }
