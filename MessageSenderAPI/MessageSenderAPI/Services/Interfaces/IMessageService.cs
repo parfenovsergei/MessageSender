@@ -4,11 +4,11 @@ namespace MessageSenderAPI.Services.Interfaces
 {
     public interface IMessageService
     {
-        Task<string> CreateMessageAsync(Message message, string userEmail);
-        Task<string> DeleteMessageAsync(int id);
-        Task<List<Message>> GetAllMessagesAsync();
-        Task<Message> GetMessageByIdAsync(int id);
-        Task<List<Message>> GetMessagesAsync(string userEmail);
-        Task<string> UpdateMessageAsync(int id, Message message);
+        Task<(bool, string)> CreateMessageAsync(Message message, string userEmail);
+        Task<(bool, string)> DeleteMessageAsync(int id);
+        Task<(bool, List<Message>)> GetAllMessagesAsync();
+        Task<(bool, Message)> GetMessageByIdAsync(int id);
+        Task<(bool, List<Message>)> GetMessagesAsync(string userEmail);
+        Task<(bool, string)> UpdateMessageAsync(int id, Message message);
     }
 }

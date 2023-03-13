@@ -24,20 +24,29 @@ namespace MessageSenderAPI.Controllers
         }
 
         [HttpGet("messages")]
-        public async Task<List<MessageViewDTO>> GetMessagesAsync()
+        public async Task<IActionResult> GetMessagesAsync()
         {
             var userEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
             var messages = await _messageService.GetMessagesAsync(userEmail);
-            var messagesViewDto = _mapper.Map<List<MessageViewDTO>>(messages);
-            return messagesViewDto;
+            if(messages.Item1)
+            {
+                var messagesViewDto = _mapper.Map<List<MessageViewDTO>>(messages.Item2);
+                return Ok(messagesViewDto);
+            }
+            return NoContent();
         }
 
         [HttpGet("messages/{id}")]
-        public async Task<MessageViewDTO> GetMessageByIdAsync(int id)
+        public async Task<IActionResult> GetMessageByIdAsync(int id)
         {
             var message = await _messageService.GetMessageByIdAsync(id);
-            var messageViewDto = _mapper.Map<MessageViewDTO>(message);
-            return messageViewDto;
+            if(message.Item1)
+            {
+                var messageViewDto = _mapper.Map<MessageViewDTO>(message.Item2);
+                return Ok(messageViewDto);
+            }
+            return NoContent();
+           
         }
 
         [HttpPost("messages")]
@@ -46,7 +55,9 @@ namespace MessageSenderAPI.Controllers
             var userEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
             var message = _mapper.Map<Message>(messageDTO);
             var result = await _messageService.CreateMessageAsync(message, userEmail);
-            return JsonConvert.SerializeObject(result);
+            if(result.Item1)
+                return Ok(result.Item2);
+            return BadRequest(result.Item2);
         }
 
         [HttpPut("messages/{id}")]
@@ -54,14 +65,18 @@ namespace MessageSenderAPI.Controllers
         {
             var message = _mapper.Map<Message>(messageDTO);
             var result = await _messageService.UpdateMessageAsync(id, message);
-            return JsonConvert.SerializeObject(result);
+            if (result.Item1)
+                return Ok(result.Item2);
+            return BadRequest(result.Item2);
         }
 
         [HttpDelete("messages/{id}")]
         public async Task<ActionResult<string>> DeleteMessageAsync(int id)
         {
             var result = await _messageService.DeleteMessageAsync(id);
-            return JsonConvert.SerializeObject(result);
+            if (result.Item1)
+                return Ok(result.Item2);
+            return BadRequest(result.Item2);
         }
     }
 }

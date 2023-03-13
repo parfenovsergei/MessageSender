@@ -13,8 +13,5 @@ namespace MessageSenderAPI.Domain.Request
         [Required(ErrorMessage = "Confirm passwrod is required")]
         [Compare("Password", ErrorMessage = "Passwords are mismatch")]
         public string ConfirmPassword { get; set; }
-
-        [Required]
-        public int VerifyCode { get; set; }
     }
 }

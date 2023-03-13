@@ -43,7 +43,7 @@ namespace MessageSenderAPI.Services.Implementations
             {
                 Text = $"Dear, {email}"
                   + Environment.NewLine
-                  + $"Your veridy code is: {code}"
+                  + $"Your verify code is: {code}"
                   + Environment.NewLine
                   + "If you got this email, but is not yours, then just ignore it."
             };

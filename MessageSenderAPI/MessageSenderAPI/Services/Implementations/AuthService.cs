@@ -55,7 +55,7 @@ namespace MessageSenderAPI.Services.Implementations
                 return response;
             }
             response.IsRegister = false;
-            response.Message = "User with the same login is already exist";
+            response.Message = "Wrong credentials";
             return response;
         }
 
@@ -73,13 +73,13 @@ namespace MessageSenderAPI.Services.Implementations
                         response.Message = "You are in.";
                         return response;
                     }
-                    response.Message = "Wrong password.";
+                    response.Message = "Wrong credentials";
                     return response;
                 }
                 response.Message = "You are not verified";
                 return response;
             }
-            response.Message = "User with the same email is not found.";
+            response.Message = "Wrong credentials";
             return response;
         }
 
@@ -102,11 +102,11 @@ namespace MessageSenderAPI.Services.Implementations
                 return response;
             }
             response.IsRegister = false;
-            response.Message = "User with the same email is not found.";
+            response.Message = "Wrong credentials";
             return response;
         }
 
-        public async Task<string> ForgotPasswordAsync(string email)
+        public async Task<(bool, string)> ForgotPasswordAsync(string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (user != null)
@@ -115,12 +115,12 @@ namespace MessageSenderAPI.Services.Implementations
                 user.VerifyCode = code;
                 await _context.SaveChangesAsync();
                 await _emailService.SendVerifyCodeAsync(email, code);
-                return "Verify code is send on your email";
+                return (true, "Verify code is send on your email");
             }
-            return "User with the same email is not registred";
+            return (false, "Wrong credentials");
         }
 
-        public async Task<string> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
+        public async Task<(bool, string)> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == resetPasswordRequest.Email);
             if(user != null)
@@ -133,14 +133,14 @@ namespace MessageSenderAPI.Services.Implementations
                     user.Password = hashPassword;
                     user.IsChangingPassword = false;
                     await _context.SaveChangesAsync();
-                    return "Password changed";
+                    return (true, "Password changed");
                 }
-                return "You are not verified";
+                return (false, "You are not confirmed");
             }
-            return "User with the same email is not registred";
+            return (false, "Wrong credentials");
         }
 
-        public async Task<string> ConfirmCodeAsync(VerifyRequest verifyRequest)
+        public async Task<(bool, string)> ConfirmCodeAsync(VerifyRequest verifyRequest)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == verifyRequest.Email);
             if (user != null)
@@ -149,19 +149,19 @@ namespace MessageSenderAPI.Services.Implementations
                 {
                     user.IsChangingPassword = true;
                     await _context.SaveChangesAsync();
-                    return "Right code";
+                    return (true, "Right code");
                 }
-                return "Inccorect code";
+                return (false, "Inccorect code");
             }
-            return "User with the same email is not registred";
+            return (false, "Wrong credentials");
         }
 
         private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
+                new Claim("email", user.Email),
+                new Claim("role", user.Role.ToString())
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _configuration.GetValue<string>("AppSettings:Key")));
