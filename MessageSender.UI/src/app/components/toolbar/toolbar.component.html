@@ -1,0 +1,16 @@
+<mat-toolbar color="warn" class="navbar">
+    <div class="right-nav">
+        <div>Message Sender</div>
+        <div class="right-buttons" *ngIf="isAuth()">
+            <button mat-raised-button routerLink="message">Create message</button>
+            <button mat-raised-button routerLink="messages">Messages</button>
+        </div>
+    </div>
+    <div>
+        <div  *ngIf="!isAuth()">
+            <button mat-raised-button routerLink="login">Login</button>
+            <button mat-raised-button routerLink="registration">Registration</button>
+        </div>
+        <button *ngIf="isAuth()" mat-raised-button (click)="logout()">Logout</button>
+    </div>
+</mat-toolbar>

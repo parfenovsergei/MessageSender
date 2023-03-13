@@ -1,0 +1,23 @@
+.example-full-width {
+    width: 100%;
+}
+.headerCard{
+    justify-content: center;
+}
+mat-card{
+    min-width: 150px;
+    max-width: 500px;
+}
+
+.main-div{
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
