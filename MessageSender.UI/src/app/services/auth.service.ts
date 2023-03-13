@@ -31,7 +31,7 @@ export class AuthService {
 
   registration(email: string, password: string, confirmPassword: string) : Observable<RegisterResponse>{
     return this.http.post<RegisterResponse>(
-      (`${environment.apiUrl}/user/register`),
+      (`${environment.apiUrl}/user/registration`),
       {
         Email: email,
         Password: password,
