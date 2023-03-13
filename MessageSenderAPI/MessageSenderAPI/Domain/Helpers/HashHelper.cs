@@ -10,9 +10,7 @@ namespace MessageSenderAPI.Domain.Helpers
         {
             byte[] salt = new byte[64];
             RandomNumberGenerator.Fill(salt);
-            return BitConverter.ToString(salt)
-                .Replace("-", "")
-                .ToLower();
+            return BitConverter.ToString(salt);
         }
 
         public static string HashPassword(string password, string salt)
@@ -21,9 +19,7 @@ namespace MessageSenderAPI.Domain.Helpers
             {
                 var hashedBytes = sha512.ComputeHash(Encoding.UTF8.
                     GetBytes(String.Concat(salt, password)));
-                var hash = BitConverter.ToString(hashedBytes)
-                    .Replace("-", "")
-                    .ToLower();
+                var hash = BitConverter.ToString(hashedBytes);
                 return hash;
             }
         }
@@ -34,9 +30,7 @@ namespace MessageSenderAPI.Domain.Helpers
             {
                 var hashedBytes = sha512.ComputeHash(Encoding.UTF8
                     .GetBytes(String.Concat(salt, password)));
-                var hash = BitConverter.ToString(hashedBytes)
-                    .Replace("-", "")
-                    .ToLower();
+                var hash = BitConverter.ToString(hashedBytes);
                 var result = String.Equals(hash, passwordHash);
                 return result;
             }

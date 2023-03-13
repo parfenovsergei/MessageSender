@@ -4,7 +4,6 @@ namespace MessageSenderAPI.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<List<User>> GetAllUsersAsync();
-        Task<List<Message>> GetMessagesByUserIdAsync(int id);
+        Task<(bool, List<User>)> GetAllUsersAsync();
     }
 }

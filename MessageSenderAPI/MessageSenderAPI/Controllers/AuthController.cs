@@ -25,11 +25,11 @@ namespace MessageSenderAPI.Controllers
             _authService = authService;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] UserRegisterDTO userRegisterDTO)
+        [HttpPost("registration")]
+        public async Task<IActionResult> RegistrationAsync([FromBody] UserRegisterDTO userRegisterDTO)
         {
             var user = _mapper.Map<User>(userRegisterDTO);
-            var response = await _authService.RegisterAsync(user);
+            var response = await _authService.RegisterationAsync(user);
             if(response.IsRegister)
                 return Ok(response);
             return BadRequest(response);

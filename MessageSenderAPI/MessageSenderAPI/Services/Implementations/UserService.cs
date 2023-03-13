@@ -12,19 +12,14 @@ namespace MessageSenderAPI.Services.Implementations
             _context = context;
         }
 
-        public async Task<List<User>> GetAllUsersAsync()
+        public async Task<(bool, List<User>)> GetAllUsersAsync()
         {
             var users = await _context.Users.ToListAsync();
-            return users;
-        }
-
-        public async Task<List<Message>> GetMessagesByUserIdAsync(int id)
-        {
-            var messages = await _context.Messages
-                .Include(m => m.Owner)
-                .Where(m => m.Owner.Id == id)
-                .ToListAsync();
-            return messages;
+            if (users != null)
+            {
+                return (true, users);
+            }
+            return (false, users);
         }
     }
 }
