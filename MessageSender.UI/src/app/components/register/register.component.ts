@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { FormGroup , FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from 'src/app/services/auth.service';
-import { RegisterResponse } from 'src/app/response/registerResponse'
+import { RegisterResponse } from 'src/app/response/registerResponse';
+import { ConfirmCodeDialogComponent } from '../dialog/confirm-code-dialog/confirm-code-dialog/confirm-code-dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +18,8 @@ export class RegisterComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private matDialog: MatDialog
     ){
       this.registerForm = new FormGroup({
         Email: new FormControl("", [
@@ -112,11 +115,38 @@ export class RegisterComponent {
       .subscribe((response: RegisterResponse) => {
         if(response.isRegister){
           this.authService.showMessage(response.message, "OK");
+          //this.openConfirmDialog(this.email.value);
           this.router.navigate(['login']);
         }
         else{
           this.authService.showMessage(response.message, "OK");
         }
       })
+  }
+
+  verifyCode(code: number){
+    this.authService
+      .verifyCode(code, this.email.value)
+      .subscribe((response: RegisterResponse) => {
+        if(response.isRegister){
+          this.authService.showMessage(response.message, "OK");
+          this.router.navigate(['login']);
+        }
+      })
+  }
+
+  openConfirmDialog(email: string){
+    let dialogRef =  this.matDialog.open(ConfirmCodeDialogComponent, {
+      width: '300px',
+      height: '300px',
+      data: email
+    });
+
+    dialogRef.afterClosed()
+      .subscribe((result: number) => {
+        if(result != null){
+          this.verifyCode(result);
+        }
+    })
   }
 }

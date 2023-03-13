@@ -26,13 +26,15 @@ import { RegisterComponent } from './components/register/register.component';
 import { MessageEditComponent } from './components/message/message-edit/message-edit.component';
 import { MessageComponent } from './components/message/message-create/message.component';
 import { MessagesViewComponent } from './components/message/messages-view/messages-view.component';
-import { DialogComponent } from './components/dialog/dialog.component';
+import { DialogComponent } from './components/dialog/delete-dialog/dialog.component';
 import { TokenInterceptorService } from './services/token-interceptor.service';
+import { ConfirmCodeDialogComponent } from './components/dialog/confirm-code-dialog/confirm-code-dialog/confirm-code-dialog.component';
+import { LogoutDialogComponent } from './components/dialog/logout-dialog/logout-dialog.component';
 
 const appRoutes: Routes =[
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent},
-  { path: 'register', component: RegisterComponent},
+  { path: 'registration', component: RegisterComponent},
   { path: 'message', component: MessageComponent},
   { path: 'messages/:id', component: MessageEditComponent},
   { path: 'messages', component: MessagesViewComponent}  
@@ -47,7 +49,9 @@ const appRoutes: Routes =[
     MessageComponent,
     MessagesViewComponent,
     MessageEditComponent,
-    DialogComponent
+    DialogComponent,
+    ConfirmCodeDialogComponent,
+    LogoutDialogComponent
   ],
   imports: [
     BrowserModule,

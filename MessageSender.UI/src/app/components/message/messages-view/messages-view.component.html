@@ -20,13 +20,13 @@
         <div class="content" fxFlex="50%" *ngFor="let item of messages">
             <mat-card class="card">
                 <mat-card-header class="card-header">
-                    <mat-card-title *ngIf="item.messageTheme">Theme: {{item.messageTheme}}</mat-card-title>
+                    <mat-card-title *ngIf="item.messageTheme">{{item.messageTheme}}</mat-card-title>
                     <mat-card-title *ngIf="!item.messageTheme">No theme</mat-card-title>
                 </mat-card-header>
                 <mat-card-content class="card-content">
                     <p>{{item.messageBody}}</p>
                     <div class="send">
-                        <span>Date to send: {{item.sendDate | date:'medium'}}</span>
+                        <span>{{item.sendDate | date:'MMMM, d, y, HH:mm'}}</span>
                         <div *ngIf="item.isSend">
                             <mat-icon fontIcon="done"></mat-icon>
                         </div>
@@ -40,9 +40,9 @@
                     <button *ngIf="!item.isSend"
                             mat-button color="warn"
                             [routerLink]="['/messages', item.id]">
-                        Edit
+                        <mat-icon fontIcon="edit"></mat-icon>
                     </button>
-                    <button mat-button color="warn" (click)="openDeleteDialog(item.id)">Delete</button>
+                    <button mat-button color="warn" (click)="openDeleteDialog(item.id)"><mat-icon fontIcon="delete"></mat-icon></button>
                 </mat-card-actions>
             </mat-card>
         </div>

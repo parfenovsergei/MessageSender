@@ -6,6 +6,11 @@
 .right-nav{
     display: flex;
     justify-content: start;
+    margin-left: 10px;
+}
+
+.right-buttons{
+    margin-left: 10px; 
 }
 
 button{

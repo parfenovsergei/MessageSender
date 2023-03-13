@@ -76,7 +76,7 @@ export class MessageComponent implements OnInit{
       this.SendDate.value)
       .subscribe((response: string) => {
         this.messageService.showMessage(response, "OK");
-        this.messageForm.reset();
+        this.messageForm = new FormGroup(null);
       });
   }
 }

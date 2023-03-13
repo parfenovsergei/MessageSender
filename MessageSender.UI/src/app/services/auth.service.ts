@@ -66,14 +66,24 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 
+  verifyCode(code: number, email: string) : Observable<RegisterResponse>{
+    return this.http.post<RegisterResponse>(
+      (`${environment.apiUrl}/user/verify`),
+      {
+        Email: email,
+        VerifyCode: code
+      },
+      this.httpOptions
+    )
+  }
+
   getAndDecodeToken(token: string){
     localStorage.setItem("Token", token);
     const payload = this.jwtHelper.decodeToken(token);
-    this.currentUser.email = payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
-    this.currentUser.role = payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+    this.currentUser = payload as User;
   }
 
   showMessage(message: string, action: string){
-    this.snackBar.open(message, action);
+    this.snackBar.open(message, action, {duration: 4000});
   }
 }

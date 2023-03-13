@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { DialogComponent } from '../../dialog/dialog.component';
+import { DialogComponent } from '../../dialog/delete-dialog/dialog.component';
 import { Role } from 'src/app/enums/role';
 import { UserSelect } from 'src/app/models/userSelect';
 import { Message } from 'src/app/models/message';
