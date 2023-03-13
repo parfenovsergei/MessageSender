@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { FormGroup , FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from 'src/app/services/auth.service';
 import { RegisterResponse } from 'src/app/response/registerResponse';
-import { ConfirmCodeDialogComponent } from '../dialog/confirm-code-dialog/confirm-code-dialog/confirm-code-dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -15,12 +13,15 @@ import { ConfirmCodeDialogComponent } from '../dialog/confirm-code-dialog/confir
 
 export class RegisterComponent {
   registerForm: FormGroup;
+  confirmForm: FormControl;
+  isRegistration: boolean;
 
   constructor(
     private authService: AuthService,
-    private router: Router,
-    private matDialog: MatDialog
+    private router: Router
     ){
+      this.isRegistration = false;
+      this.confirmForm = new FormControl();
       this.registerForm = new FormGroup({
         Email: new FormControl("", [
           Validators.required,
@@ -35,7 +36,8 @@ export class RegisterComponent {
           Validators.required,
           Validators.minLength(6),
           (control) => this.passwordMatcher(control, 'ConfirmPassword')
-        ])
+        ]),
+        Code: new FormControl(Number)
       })
   }
 
@@ -49,6 +51,10 @@ export class RegisterComponent {
 
   get confirmPassword(){
     return this.registerForm.controls["ConfirmPassword"];
+  }
+
+  get code(){
+    return this.registerForm.controls["Code"];
   }
 
   private passwordMatcher(control: AbstractControl, name: string){
@@ -114,9 +120,8 @@ export class RegisterComponent {
         this.confirmPassword.value)
       .subscribe((response: RegisterResponse) => {
         if(response.isRegister){
+          this.isRegistration = true;
           this.authService.showMessage(response.message, "OK");
-          //this.openConfirmDialog(this.email.value);
-          this.router.navigate(['login']);
         }
         else{
           this.authService.showMessage(response.message, "OK");
@@ -133,20 +138,5 @@ export class RegisterComponent {
           this.router.navigate(['login']);
         }
       })
-  }
-
-  openConfirmDialog(email: string){
-    let dialogRef =  this.matDialog.open(ConfirmCodeDialogComponent, {
-      width: '300px',
-      height: '300px',
-      data: email
-    });
-
-    dialogRef.afterClosed()
-      .subscribe((result: number) => {
-        if(result != null){
-          this.verifyCode(result);
-        }
-    })
   }
 }

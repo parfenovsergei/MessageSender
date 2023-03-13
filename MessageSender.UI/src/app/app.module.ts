@@ -28,7 +28,6 @@ import { MessageComponent } from './components/message/message-create/message.co
 import { MessagesViewComponent } from './components/message/messages-view/messages-view.component';
 import { DialogComponent } from './components/dialog/delete-dialog/dialog.component';
 import { TokenInterceptorService } from './services/token-interceptor.service';
-import { ConfirmCodeDialogComponent } from './components/dialog/confirm-code-dialog/confirm-code-dialog/confirm-code-dialog.component';
 import { LogoutDialogComponent } from './components/dialog/logout-dialog/logout-dialog.component';
 
 const appRoutes: Routes =[
@@ -50,7 +49,6 @@ const appRoutes: Routes =[
     MessagesViewComponent,
     MessageEditComponent,
     DialogComponent,
-    ConfirmCodeDialogComponent,
     LogoutDialogComponent
   ],
   imports: [

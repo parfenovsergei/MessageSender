@@ -7,7 +7,7 @@
 			<form [formGroup]="registerForm" (ngSubmit)="registration()">
 				<mat-form-field class="example-full-width">
 					<mat-label>Email</mat-label>
-					<input matInput formControlName="Email"  name="email">
+					<input matInput formControlName="Email">
 					<mat-error *ngIf="registerForm.invalid">{{getEmailErrorMessage()}}</mat-error>
 				</mat-form-field>
 				<mat-form-field class="example-full-width">
@@ -20,11 +20,27 @@
 					<input type="password" matInput formControlName="ConfirmPassword">
 					<mat-error *ngIf="registerForm.invalid">{{getConfirmPasswordErrorMessage()}}</mat-error>
 				</mat-form-field>
+				<mat-form-field *ngIf="isRegistration">
+					<mat-label>Code</mat-label>
+					<input matInput type="number" formControlName="Code">
+				</mat-form-field>
 				<div class="register-button">
-					<button [disabled]="registerForm.invalid" 
-							mat-raised-button 
-							color="warn">
+					<button 
+						*ngIf="!isRegistration"
+						[disabled]="registerForm.invalid" 
+						mat-raised-button 
+						color="warn"
+						>
 						Registration
+					</button>
+					<button
+						*ngIf="isRegistration"
+						[disabled]="registerForm.invalid" 
+						mat-raised-button
+						color="warn" 
+						(click)="verifyCode(code.value)"
+						>
+						Confirm
 					</button>
 				</div>
 			</form>
