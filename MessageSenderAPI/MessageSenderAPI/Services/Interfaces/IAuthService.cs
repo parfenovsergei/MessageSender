@@ -9,8 +9,8 @@ namespace MessageSenderAPI.Services.Interfaces
         Task<LoginResponse> LoginAsync(User loginUser);
         Task<RegisterResponse> RegisterAsync(User registerUser);
         Task<RegisterResponse> VerifyAsync(VerifyRequest verifyRequest);
-        Task<string> ForgotPasswordAsync(string email);
-        Task<string> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest);
-        Task<string> ConfirmCodeAsync(VerifyRequest verifyRequest);
+        Task<(bool, string)> ForgotPasswordAsync(string email);
+        Task<(bool, string)> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest);
+        Task<(bool, string)> ConfirmCodeAsync(VerifyRequest verifyRequest);
     }
 }

@@ -26,47 +26,59 @@ namespace MessageSenderAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<RegisterResponse> RegisterAsync([FromBody] UserRegisterDTO userRegisterDTO)
+        public async Task<IActionResult> RegisterAsync([FromBody] UserRegisterDTO userRegisterDTO)
         {
             var user = _mapper.Map<User>(userRegisterDTO);
             var response = await _authService.RegisterAsync(user);
-            return response;
+            if(response.IsRegister)
+                return Ok(response);
+            return BadRequest(response);
         }
 
         [HttpPost("login")]
-        public async Task<LoginResponse> LoginAsync([FromBody] UserLoginDTO userLoginDTO)
+        public async Task<IActionResult> LoginAsync([FromBody] UserLoginDTO userLoginDTO)
         {
             var user = _mapper.Map<User>(userLoginDTO);
             var response = await _authService.LoginAsync(user);
-            return response;
+            if (response.Token != null)
+                return Ok(response);
+            return BadRequest(response);
         }
 
         [HttpPost("verify")]
-        public async Task<RegisterResponse> VerifyAsync([FromBody] VerifyRequest verifyRequest)
+        public async Task<IActionResult> VerifyAsync([FromBody] VerifyRequest verifyRequest)
         {
             var response = await _authService.VerifyAsync(verifyRequest);
-            return response;
+            if (response.IsRegister)
+                return Ok(response);
+            return BadRequest(response);
         }
 
         [HttpPost("forgot-password")]
-        public async Task<ActionResult<string>> ForgotPasswordAsync([FromBody] string email)
+        public async Task<IActionResult> ForgotPasswordAsync([FromBody] string email)
         {
             var response = await _authService.ForgotPasswordAsync(email);
-            return response;
+            if(response.Item1)
+                return Ok(response.Item2);
+            return BadRequest(response.Item2);
         }
 
         [HttpPost("confirm-code")]
-        public async Task<ActionResult<string>> ConfirmCodeAsync([FromBody] VerifyRequest verifyRequest)
+        public async Task<IActionResult> ConfirmCodeAsync([FromBody] VerifyRequest verifyRequest)
         {
             var response = await _authService.ConfirmCodeAsync(verifyRequest);
-            return response;
+            if (response.Item1)
+                return Ok(response.Item2);
+            return BadRequest(response.Item2);
         }
 
         [HttpPost("reset-password")]
-        public async Task<ActionResult<string>> ResetPasswordAsync([FromBody] ResetPasswordRequest resetPasswordRequest)
+        public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordRequest resetPasswordRequest)
         {
             var response = await _authService.ResetPasswordAsync(resetPasswordRequest);
-            return response;
+            if (response.Item1)
+                return Ok(response.Item2);
+            return BadRequest(response.Item2);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace MessageSenderAPI.Services.Implementations
             _context = context;
         }
 
-        public async Task<string> CreateMessageAsync(Message message, string userEmail)
+        public async Task<(bool, string)> CreateMessageAsync(Message message, string userEmail)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == userEmail);
             var newMessage = new Message()
@@ -25,47 +25,53 @@ namespace MessageSenderAPI.Services.Implementations
             };
             await _context.Messages.AddAsync(newMessage);
             await _context.SaveChangesAsync();
-            return "Message created.";
+            return (true, "Message created.");
         }
 
-        public async  Task<string> DeleteMessageAsync(int id)
+        public async Task<(bool, string)> DeleteMessageAsync(int id)
         {
             var message = await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
             _context.Messages.Remove(message);
             await _context.SaveChangesAsync();
-            return "Message deleted";
+            return (true, "Message deleted");
         }
 
-        public async Task<List<Message>> GetAllMessagesAsync()
+        public async Task<(bool, List<Message>)> GetAllMessagesAsync()
         {
             var messages = await _context.Messages.ToListAsync();
-            return messages;
+            if (messages == null)
+                return (false, messages);
+            return (true, messages);
         }
 
-        public async Task<Message> GetMessageByIdAsync(int id)
+        public async Task<(bool, Message)> GetMessageByIdAsync(int id)
         {
             var message = await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
-            return message;
+            if (message == null)
+                return (false, message);
+            return (true, message);
         }
 
-        public async Task<List<Message>> GetMessagesAsync(string userEmail)
+        public async Task<(bool, List<Message>)> GetMessagesAsync(string userEmail)
         {
             var messages = await _context.Messages
                 .Include(m => m.Owner)
                 .Where(m => m.Owner.Email == userEmail)
                 .ToListAsync();
-            return messages;
+            if (messages == null)
+                return (false, messages);
+            return (true, messages);
         }
 
-        public async Task<string> UpdateMessageAsync(int id, Message newMessage)
+        public async Task<(bool, string)> UpdateMessageAsync(int id, Message newMessage)
         {
             var message = await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
             message.MessageTheme = newMessage.MessageTheme;
             message.MessageBody = newMessage.MessageBody;
-            message.SendDate = newMessage.SendDate;
+            message.SendDate = newMessage.SendDate.ToLocalTime();
             _context.Messages.Update(message);
             await _context.SaveChangesAsync();
-            return "Message updated.";
+            return (true, "Message updated.");
         }
     }
 }

@@ -34,11 +34,11 @@ namespace MessageSenderAPI.Controllers
 
         [AuthorizeRoles(Role.Admin)]
         [HttpGet("users/{id}/messages")]
-        public async Task<List<MessageViewDTO>> GetMessageByUserIdAsync(int id)
+        public async Task<List<MessageViewDTO>> GetUserMessagesAsync(int id)
         {
             var messages = await _userService.GetMessagesByUserIdAsync(id);
             var messagesViewDto = _mapper.Map<List<MessageViewDTO>>(messages);
             return messagesViewDto;
-        }
+        }//в message controller
     }
 }
