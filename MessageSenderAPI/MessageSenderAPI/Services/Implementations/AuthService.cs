@@ -30,7 +30,7 @@ namespace MessageSenderAPI.Services.Implementations
             _emailService = emailService;
         }
 
-        public async Task<RegisterResponse> RegisterAsync(User registerUser)
+        public async Task<RegisterResponse> RegisterationAsync(User registerUser)
         {
             var response = new RegisterResponse();
             if (!IsExist(registerUser.Email))

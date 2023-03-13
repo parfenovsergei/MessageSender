@@ -7,7 +7,7 @@ namespace MessageSenderAPI.Services.Interfaces
     public interface IAuthService
     {
         Task<LoginResponse> LoginAsync(User loginUser);
-        Task<RegisterResponse> RegisterAsync(User registerUser);
+        Task<RegisterResponse> RegisterationAsync(User registerUser);
         Task<RegisterResponse> VerifyAsync(VerifyRequest verifyRequest);
         Task<(bool, string)> ForgotPasswordAsync(string email);
         Task<(bool, string)> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest);

@@ -25,20 +25,15 @@ namespace MessageSenderAPI.Controllers
 
         [AuthorizeRoles(Role.Admin)]
         [HttpGet("users")]
-        public async Task<List<UserDTO>> GetAllUsersAsync()
+        public async Task<IActionResult> GetAllUsersAsync()
         {
             var users = await _userService.GetAllUsersAsync();
-            var result = _mapper.Map<List<UserDTO>>(users);
-            return result;
+            if(users.Item1)
+            {
+                var result = _mapper.Map<List<UserDTO>>(users.Item2);
+                return Ok(result);
+            }
+            return NoContent();
         }
-
-        [AuthorizeRoles(Role.Admin)]
-        [HttpGet("users/{id}/messages")]
-        public async Task<List<MessageViewDTO>> GetUserMessagesAsync(int id)
-        {
-            var messages = await _userService.GetMessagesByUserIdAsync(id);
-            var messagesViewDto = _mapper.Map<List<MessageViewDTO>>(messages);
-            return messagesViewDto;
-        }//в message controller
     }
 }

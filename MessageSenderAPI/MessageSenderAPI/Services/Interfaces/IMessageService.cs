@@ -9,6 +9,7 @@ namespace MessageSenderAPI.Services.Interfaces
         Task<(bool, List<Message>)> GetAllMessagesAsync();
         Task<(bool, Message)> GetMessageByIdAsync(int id);
         Task<(bool, List<Message>)> GetMessagesAsync(string userEmail);
+        Task<(bool, List<Message>)> GetMessagesByUserIdAsync(int id);
         Task<(bool, string)> UpdateMessageAsync(int id, Message message);
     }
 }

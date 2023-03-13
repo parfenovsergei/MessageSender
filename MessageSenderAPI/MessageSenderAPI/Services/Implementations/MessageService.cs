@@ -63,6 +63,17 @@ namespace MessageSenderAPI.Services.Implementations
             return (true, messages);
         }
 
+        public async Task<(bool, List<Message>)> GetMessagesByUserIdAsync(int id)
+        {
+            var messages = await _context.Messages
+                .Include(m => m.Owner)
+                .Where(m => m.Owner.Id == id)
+                .ToListAsync();
+            if (messages == null)
+                return (false, messages);
+            return (true, messages);
+        }
+
         public async Task<(bool, string)> UpdateMessageAsync(int id, Message newMessage)
         {
             var message = await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);

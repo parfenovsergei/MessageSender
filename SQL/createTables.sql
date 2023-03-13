@@ -4,8 +4,8 @@ create table Users
 (
 	Id int primary key identity(1, 1),
 	Email nvarchar(256) not null,
-	[Password] char(128) not null,
-	Salt char(128) not null,
+	[Password] char(191) not null,
+	Salt char(191) not null,
 	[Role] int not null
 )
 
