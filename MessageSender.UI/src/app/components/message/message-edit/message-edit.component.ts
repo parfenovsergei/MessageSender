@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'src/app/services/message.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Message } from 'src/app/models/message';
+import { GeneralResponse } from 'src/app/response/generalResponse';
 const daysInAYear = 365;
 
 @Component({
@@ -87,9 +88,14 @@ export class MessageEditComponent implements OnInit{
       this.MessageTheme.value,
       this.MessageBody.value,
       this.SendDate.value)
-      .subscribe((response: string) => {
-        this.messageService.showMessage(response, "OK");
-        this.router.navigate(['messages']);
+      .subscribe((response: GeneralResponse) => {
+        if(response.flag){
+          this.messageService.showMessage(response.message, "OK");
+          this.router.navigate(['messages']);
+        }
+        else{
+          this.messageService.showMessage(response.message, "OK");
+        }
       });
   }
 }

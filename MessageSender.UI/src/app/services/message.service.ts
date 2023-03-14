@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 import { Message } from '../models/message';
+import { GeneralResponse } from '../response/generalResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,9 @@ export class MessageService {
   createMessage(
     messageTheme: string,
     messageBody: string,
-    sendDate: Date) : Observable<string>
+    sendDate: Date) : Observable<GeneralResponse>
     {
-      return this.http.post<string>(
+      return this.http.post<GeneralResponse>(
         (`${environment.apiUrl}/messages`),
         {
           MessageTheme: messageTheme,
@@ -41,8 +42,8 @@ export class MessageService {
     return this.http.get<Message[]>(`${environment.apiUrl}/users/${id}/messages`);
   }
 
-  deleteMessage(id: number) : Observable<string>{
-    return this.http.delete<string>(`${environment.apiUrl}/messages/${id}`);
+  deleteMessage(id: number) : Observable<GeneralResponse>{
+    return this.http.delete<GeneralResponse>(`${environment.apiUrl}/messages/${id}`);
   }
 
   find(id: number) : Observable<Message>{
@@ -53,8 +54,8 @@ export class MessageService {
     id: number,
     messageTheme: string,
     messageBody: string,
-    sendDate: Date) : Observable<string>{
-      return this.http.put<string>(
+    sendDate: Date) : Observable<GeneralResponse>{
+      return this.http.put<GeneralResponse>(
         (`${environment.apiUrl}/messages/${id}`),
         {
           MessageTheme: messageTheme,

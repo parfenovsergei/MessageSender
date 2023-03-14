@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 
-import { RegisterResponse } from 'src/app/response/registerResponse'
+import { GeneralResponse } from 'src/app/response/generalResponse'
 import { LoginResponse } from '../response/loginResponse';
 import { User } from '../models/user';
 import { environment } from 'src/environments/environment';
@@ -18,6 +18,7 @@ export class AuthService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
+  email!: string;
   currentUser: User = {
     email: null!,
     role: null!
@@ -29,8 +30,8 @@ export class AuthService {
     private router: Router,
     private jwtHelper: JwtHelperService) { }
 
-  registration(email: string, password: string, confirmPassword: string) : Observable<RegisterResponse>{
-    return this.http.post<RegisterResponse>(
+  registration(email: string, password: string, confirmPassword: string) : Observable<GeneralResponse>{
+    return this.http.post<GeneralResponse>(
       (`${environment.apiUrl}/user/registration`),
       {
         Email: email,
@@ -66,12 +67,46 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 
-  verifyCode(code: number, email: string) : Observable<RegisterResponse>{
-    return this.http.post<RegisterResponse>(
+  verifyCode(code: number, email: string) : Observable<GeneralResponse>{
+    return this.http.post<GeneralResponse>(
       (`${environment.apiUrl}/user/verify`),
       {
         Email: email,
         VerifyCode: code
+      },
+      this.httpOptions
+    )
+  }
+
+  sendCode(email: string) : Observable<GeneralResponse>{
+    return this.http.post<GeneralResponse>(
+      (`${environment.apiUrl}/user/forgot-password`),
+      {
+        Email: email
+      },
+      this.httpOptions
+    )
+  }
+
+  confirmCode(email: string, code: number) : Observable<GeneralResponse>{
+    this.email = email;
+    return this.http.post<GeneralResponse>(
+      (`${environment.apiUrl}/user/confirm-code`),
+      {
+        Email: email,
+        VerifyCode: code
+      },
+      this.httpOptions
+    )
+  }
+
+  changePassword(password: string, confirmPassword: string) : Observable<GeneralResponse>{
+    return this.http.post<GeneralResponse>(
+      (`${environment.apiUrl}/user/reset-password`),
+      {
+        Email: this.email,
+        Password: password,
+        ConfirmPassword: confirmPassword
       },
       this.httpOptions
     )

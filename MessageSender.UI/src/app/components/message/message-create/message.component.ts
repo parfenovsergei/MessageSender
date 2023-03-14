@@ -4,6 +4,7 @@ import { FormGroup , FormControl, Validators } from '@angular/forms';
 
 import { MessageService } from 'src/app/services/message.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { GeneralResponse } from 'src/app/response/generalResponse';
 const daysInAYear = 365;
 
 @Component({
@@ -74,9 +75,14 @@ export class MessageComponent implements OnInit{
       this.messageTheme.value,
       this.MessageBody.value,
       this.SendDate.value)
-      .subscribe((response: string) => {
-        this.messageService.showMessage(response, "OK");
+      .subscribe((response: GeneralResponse) => {
+        if(response.flag){
+        this.messageService.showMessage(response.message, "OK");
         this.messageForm = new FormGroup(null);
+        }
+        else{
+          this.messageService.showMessage(response.message, "OK");
+        }
       });
   }
 }

@@ -9,6 +9,7 @@ import { Message } from 'src/app/models/message';
 import { UserService } from 'src/app/services/user.service';
 import { MessageService } from 'src/app/services/message.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { GeneralResponse } from 'src/app/response/generalResponse';
 
 @Component({
   selector: 'app-messages-view',
@@ -45,9 +46,14 @@ export class MessagesViewComponent implements OnInit{
 
   deleteMessage(id: number){
     this.messageService.deleteMessage(id)
-      .subscribe((result: string) => {
-        this.messageService.showMessage(result, "OK");
-        this.getMessages();
+      .subscribe((response: GeneralResponse) => {
+        if(response.flag){
+          this.messageService.showMessage(response.message, "OK");
+          this.getMessages();
+        }
+        else{
+          this.messageService.showMessage(response.message, "OK");
+        }
       });
   }
 

@@ -3,7 +3,7 @@ import { FormGroup , FormControl, Validators, AbstractControl } from '@angular/f
 import { Router } from '@angular/router';
 
 import { AuthService } from 'src/app/services/auth.service';
-import { RegisterResponse } from 'src/app/response/registerResponse';
+import { GeneralResponse } from 'src/app/response/generalResponse';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +13,6 @@ import { RegisterResponse } from 'src/app/response/registerResponse';
 
 export class RegisterComponent {
   registerForm: FormGroup;
-  confirmForm: FormControl;
   isRegistration: boolean;
 
   constructor(
@@ -21,7 +20,6 @@ export class RegisterComponent {
     private router: Router
     ){
       this.isRegistration = false;
-      this.confirmForm = new FormControl();
       this.registerForm = new FormGroup({
         Email: new FormControl("", [
           Validators.required,
@@ -37,7 +35,7 @@ export class RegisterComponent {
           Validators.minLength(6),
           (control) => this.passwordMatcher(control, 'ConfirmPassword')
         ]),
-        Code: new FormControl(Number)
+        Code: new FormControl("")
       })
   }
 
@@ -55,6 +53,11 @@ export class RegisterComponent {
 
   get code(){
     return this.registerForm.controls["Code"];
+  }
+
+  setRequiredCode(){
+    this.registerForm.controls["Code"].setValidators([Validators.required]);
+    this.registerForm.controls["Code"].updateValueAndValidity();
   }
 
   private passwordMatcher(control: AbstractControl, name: string){
@@ -77,6 +80,13 @@ export class RegisterComponent {
     else {
       return {mismatch : true};
     };
+  }
+
+  getCodeErrorMessage(){
+    if(this.code.hasError('required')){
+      return 'Enter code here';
+    }
+    return '';
   }
 
   getEmailErrorMessage(){
@@ -118,25 +128,25 @@ export class RegisterComponent {
         this.email.value,
         this.password.value,
         this.confirmPassword.value)
-      .subscribe((response: RegisterResponse) => {
-        if(response.isRegister){
+      .subscribe((response: GeneralResponse) => {
           this.isRegistration = true;
+          this.setRequiredCode();
           this.authService.showMessage(response.message, "OK");
-        }
-        else{
-          this.authService.showMessage(response.message, "OK");
-        }
+      },
+      (err) => {
+        this.authService.showMessage(err.error.message, "OK");
       })
   }
 
   verifyCode(code: number){
     this.authService
       .verifyCode(code, this.email.value)
-      .subscribe((response: RegisterResponse) => {
-        if(response.isRegister){
+      .subscribe((response: GeneralResponse) => {
           this.authService.showMessage(response.message, "OK");
           this.router.navigate(['login']);
-        }
+      },
+      (err) => {
+        this.authService.showMessage(err.error.message, "OK");
       })
   }
 }

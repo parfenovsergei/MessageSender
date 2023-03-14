@@ -4,10 +4,6 @@
 .headerCard{
     justify-content: center;
 }
-mat-card{
-    min-width: 150px;
-    max-width: 500px;
-}
 
 .main-div{
     margin-top: 5%;
@@ -16,8 +12,29 @@ mat-card{
     align-items: center;
 }
 
-.login-button{
+.login-card{
+    min-width: 150px;
+    max-width: 500px;
+}
+
+.buttons{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.forgot-link{
+    font-size: small;
+}
+
+.login-button{
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

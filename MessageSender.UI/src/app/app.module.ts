@@ -29,11 +29,13 @@ import { MessagesViewComponent } from './components/message/messages-view/messag
 import { DialogComponent } from './components/dialog/delete-dialog/dialog.component';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { LogoutDialogComponent } from './components/dialog/logout-dialog/logout-dialog.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 const appRoutes: Routes =[
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent},
   { path: 'registration', component: RegisterComponent},
+  { path: 'change-password', component: ChangePasswordComponent},
   { path: 'message', component: MessageComponent},
   { path: 'messages/:id', component: MessageEditComponent},
   { path: 'messages', component: MessagesViewComponent}  
@@ -49,7 +51,8 @@ const appRoutes: Routes =[
     MessagesViewComponent,
     MessageEditComponent,
     DialogComponent,
-    LogoutDialogComponent
+    LogoutDialogComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
