@@ -16,8 +16,8 @@ const daysInAYear = 365;
 export class MessageComponent implements OnInit{
   
   messageForm: FormGroup;
-  public minDate: Date = new Date();
-  public maxDate: Date = new Date();
+  public minDate!: Date;
+  public maxDate!: Date;
   constructor(
     private messageService: MessageService,
     private router: Router,
@@ -38,7 +38,10 @@ export class MessageComponent implements OnInit{
     if(!this.authService.loggedIn()){
       this.router.navigate(['login']);
     }
+    this.minDate = new Date();
+    this.maxDate = new Date();
     this.maxDate.setDate(this.maxDate.getDate() + daysInAYear);
+    setTimeout(() => { this.ngOnInit() }, 1000 * 60);
   }
 
   get messageTheme(){
@@ -67,18 +70,23 @@ export class MessageComponent implements OnInit{
     if(this.SendDate.hasError('required')){
       return 'Date is required';
     }
-    return ''
+    else if(this.SendDate.value < this.minDate){
+      return 'Time is change, please select correct value';
+    }
+    return '';
   }
 
   createMessage(){
-    this.messageService.createMessage(
-      this.messageTheme.value,
-      this.MessageBody.value,
-      this.SendDate.value)
+    this.messageService
+      .createMessage(
+        this.messageTheme.value,
+        this.MessageBody.value,
+        this.SendDate.value
+      )
       .subscribe((response: GeneralResponse) => {
         if(response.flag){
-        this.messageService.showMessage(response.message, "OK");
-        this.messageForm = new FormGroup(null);
+          this.messageService.showMessage(response.message, "OK");
+          this.messageForm = new FormGroup(null);
         }
         else{
           this.messageService.showMessage(response.message, "OK");

@@ -43,7 +43,10 @@ export class MessageEditComponent implements OnInit{
     }
     this.id = this.route.snapshot.params['id'];
     this.getMessageById();
+    this.minDate = new Date();
+    this.maxDate = new Date();
     this.maxDate.setDate(this.maxDate.getDate() + daysInAYear);
+    setTimeout(() => { this.ngOnInit() }, 1000 * 60);
   }
 
   getMessageById(){
@@ -79,7 +82,10 @@ export class MessageEditComponent implements OnInit{
     if(this.SendDate.hasError('required')){
       return 'Date is required';
     }
-    return ''
+    else if(this.SendDate.value < this.minDate){
+      return 'Time is change, please select correct value';
+    }
+    return '';
   }
 
   editMessage(){

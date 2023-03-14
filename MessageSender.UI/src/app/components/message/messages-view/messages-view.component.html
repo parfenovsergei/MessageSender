@@ -6,6 +6,7 @@
 </div>
 <div *ngIf="isAdmin()" class="selecter">
     <h4>Choose user</h4>
+    
     <mat-form-field appearance="fill">
         <mat-label>Users</mat-label>
         <mat-select [(value)]="selectedUser" (selectionChange)="changeSelectedUser()">
