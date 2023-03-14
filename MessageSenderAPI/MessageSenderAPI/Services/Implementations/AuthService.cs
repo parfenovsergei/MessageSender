@@ -1,4 +1,5 @@
-﻿using MessageSenderAPI.Domain.Enums;
+﻿using Azure;
+using MessageSenderAPI.Domain.Enums;
 using MessageSenderAPI.Domain.Helpers;
 using MessageSenderAPI.Domain.Models;
 using MessageSenderAPI.Domain.Request;
@@ -30,9 +31,9 @@ namespace MessageSenderAPI.Services.Implementations
             _emailService = emailService;
         }
 
-        public async Task<RegisterResponse> RegisterationAsync(User registerUser)
+        public async Task<GeneralResponse> RegisterationAsync(User registerUser)
         {
-            var response = new RegisterResponse();
+            var response = new GeneralResponse();
             if (!IsExist(registerUser.Email))
             {
                 var salt = HashHelper.GenerateSalt();
@@ -50,11 +51,11 @@ namespace MessageSenderAPI.Services.Implementations
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
                 await _emailService.SendVerifyCodeAsync(newUser.Email, newUser.VerifyCode);
-                response.IsRegister = true;
-                response.Message = "We send six-digit code on your email";
+                response.Flag = true;
+                response.Message = "Code sended on your email";
                 return response;
             }
-            response.IsRegister = false;
+            response.Flag = false;
             response.Message = "Wrong credentials";
             return response;
         }
@@ -83,9 +84,9 @@ namespace MessageSenderAPI.Services.Implementations
             return response;
         }
 
-        public async Task<RegisterResponse> VerifyAsync(VerifyRequest verifyRequest)
+        public async Task<GeneralResponse> VerifyAsync(VerifyRequest verifyRequest)
         {
-            var response = new RegisterResponse();
+            var response = new GeneralResponse();
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == verifyRequest.Email);
             if(user != null)
             {
@@ -93,21 +94,22 @@ namespace MessageSenderAPI.Services.Implementations
                 {
                     user.IsVerifed = true;
                     await _context.SaveChangesAsync();
-                    response.IsRegister = true;
+                    response.Flag = true;
                     response.Message = "You verified!";
                     return response;
                 }
-                response.IsRegister = false;
+                response.Flag = false;
                 response.Message = "Inccorect verify code";
                 return response;
             }
-            response.IsRegister = false;
+            response.Flag = false;
             response.Message = "Wrong credentials";
             return response;
         }
 
-        public async Task<(bool, string)> ForgotPasswordAsync(string email)
+        public async Task<GeneralResponse> ForgotPasswordAsync(string email)
         {
+            var response = new GeneralResponse();
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (user != null)
             {
@@ -115,13 +117,18 @@ namespace MessageSenderAPI.Services.Implementations
                 user.VerifyCode = code;
                 await _context.SaveChangesAsync();
                 await _emailService.SendVerifyCodeAsync(email, code);
-                return (true, "Verify code is send on your email");
+                response.Flag = true;
+                response.Message = "Verify code is send on your email";
+                return response;
             }
-            return (false, "Wrong credentials");
+            response.Flag = false;
+            response.Message = "Wrong credentials";
+            return response;
         }
 
-        public async Task<(bool, string)> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
+        public async Task<GeneralResponse> ResetPasswordAsync(ResetPasswordRequest resetPasswordRequest)
         {
+            var response = new GeneralResponse();
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == resetPasswordRequest.Email);
             if(user != null)
             {
@@ -133,15 +140,22 @@ namespace MessageSenderAPI.Services.Implementations
                     user.Password = hashPassword;
                     user.IsChangingPassword = false;
                     await _context.SaveChangesAsync();
-                    return (true, "Password changed");
+                    response.Flag = true;
+                    response.Message = "Password changed";
+                    return response;
                 }
-                return (false, "You are not confirmed");
+                response.Flag = false;
+                response.Message = "You are not confirmed";
+                return response;
             }
-            return (false, "Wrong credentials");
+            response.Flag = false;
+            response.Message = "Wrong credentials";
+            return response;
         }
 
-        public async Task<(bool, string)> ConfirmCodeAsync(VerifyRequest verifyRequest)
+        public async Task<GeneralResponse> ConfirmCodeAsync(VerifyRequest verifyRequest)
         {
+            var response = new GeneralResponse();
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == verifyRequest.Email);
             if (user != null)
             {
@@ -149,11 +163,17 @@ namespace MessageSenderAPI.Services.Implementations
                 {
                     user.IsChangingPassword = true;
                     await _context.SaveChangesAsync();
-                    return (true, "Right code");
+                    response.Flag = true;
+                    response.Message = "Right code";
+                    return response;
                 }
-                return (false, "Inccorect code");
+                response.Flag = false;
+                response.Message = "Inccorect code";
+                return response;
             }
-            return (false, "Wrong credentials");
+            response.Flag = false;
+            response.Message = "Wrong credentials";
+            return response;
         }
 
         private string CreateToken(User user)

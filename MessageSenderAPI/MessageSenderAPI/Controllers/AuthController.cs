@@ -30,7 +30,7 @@ namespace MessageSenderAPI.Controllers
         {
             var user = _mapper.Map<User>(userRegisterDTO);
             var response = await _authService.RegisterationAsync(user);
-            if(response.IsRegister)
+            if(response.Flag)
                 return Ok(response);
             return BadRequest(response);
         }
@@ -49,36 +49,36 @@ namespace MessageSenderAPI.Controllers
         public async Task<IActionResult> VerifyAsync([FromBody] VerifyRequest verifyRequest)
         {
             var response = await _authService.VerifyAsync(verifyRequest);
-            if (response.IsRegister)
+            if (response.Flag)
                 return Ok(response);
             return BadRequest(response);
         }
 
         [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPasswordAsync([FromBody] string email)
+        public async Task<IActionResult> ForgotPasswordAsync([FromBody] GetCodeRequest codeRequest)
         {
-            var response = await _authService.ForgotPasswordAsync(email);
-            if(response.Item1)
-                return Ok(response.Item2);
-            return BadRequest(response.Item2);
+            var response = await _authService.ForgotPasswordAsync(codeRequest.Email);
+            if(response.Flag)
+                return Ok(response);
+            return BadRequest(response);
         }
 
         [HttpPost("confirm-code")]
         public async Task<IActionResult> ConfirmCodeAsync([FromBody] VerifyRequest verifyRequest)
         {
             var response = await _authService.ConfirmCodeAsync(verifyRequest);
-            if (response.Item1)
-                return Ok(response.Item2);
-            return BadRequest(response.Item2);
+            if (response.Flag)
+                return Ok(response);
+            return BadRequest(response);
         }
 
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordRequest resetPasswordRequest)
         {
             var response = await _authService.ResetPasswordAsync(resetPasswordRequest);
-            if (response.Item1)
-                return Ok(response.Item2);
-            return BadRequest(response.Item2);
+            if (response.Flag)
+                return Ok(response);
+            return BadRequest(response);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using MessageSenderAPI.Domain.Models;
+﻿using Azure;
+using MessageSenderAPI.Domain.Models;
+using MessageSenderAPI.Domain.Response;
 using MessageSenderAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,8 +14,9 @@ namespace MessageSenderAPI.Services.Implementations
             _context = context;
         }
 
-        public async Task<(bool, string)> CreateMessageAsync(Message message, string userEmail)
+        public async Task<GeneralResponse> CreateMessageAsync(Message message, string userEmail)
         {
+            var response = new GeneralResponse();
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == userEmail);
             var newMessage = new Message()
             {
@@ -25,15 +28,20 @@ namespace MessageSenderAPI.Services.Implementations
             };
             await _context.Messages.AddAsync(newMessage);
             await _context.SaveChangesAsync();
-            return (true, "Message created.");
+            response.Flag = true;
+            response.Message = "Message created";
+            return response;
         }
 
-        public async Task<(bool, string)> DeleteMessageAsync(int id)
+        public async Task<GeneralResponse> DeleteMessageAsync(int id)
         {
+            var response = new GeneralResponse();
             var message = await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
             _context.Messages.Remove(message);
             await _context.SaveChangesAsync();
-            return (true, "Message deleted");
+            response.Flag = true;
+            response.Message = "Message deleted";
+            return response;
         }
 
         public async Task<(bool, List<Message>)> GetAllMessagesAsync()
@@ -74,15 +82,18 @@ namespace MessageSenderAPI.Services.Implementations
             return (true, messages);
         }
 
-        public async Task<(bool, string)> UpdateMessageAsync(int id, Message newMessage)
+        public async Task<GeneralResponse> UpdateMessageAsync(int id, Message newMessage)
         {
+            var response = new GeneralResponse();
             var message = await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
             message.MessageTheme = newMessage.MessageTheme;
             message.MessageBody = newMessage.MessageBody;
             message.SendDate = newMessage.SendDate.ToLocalTime();
             _context.Messages.Update(message);
             await _context.SaveChangesAsync();
-            return (true, "Message updated.");
+            response.Flag = true;
+            response.Message = "Message updated";
+            return response;
         }
     }
 }

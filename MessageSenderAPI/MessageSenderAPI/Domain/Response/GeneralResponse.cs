@@ -1,8 +1,8 @@
 ﻿namespace MessageSenderAPI.Domain.Response
 {
-    public class RegisterResponse
+    public class GeneralResponse
     {
-        public bool IsRegister { get; set; }
+        public bool Flag { get; set; }
         public string? Message { get; set; }
     }
 }
