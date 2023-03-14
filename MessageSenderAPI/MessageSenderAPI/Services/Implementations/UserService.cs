@@ -12,6 +12,14 @@ namespace MessageSenderAPI.Services.Implementations
             _context = context;
         }
 
+        public async Task CheckUnverifiedUsersAsync()
+        {
+            var unverifiedUsers = _context.Users
+                .Where(u => u.IsVerifed == false && u.CreateAndVerifyTime < DateTime.Now);
+            _context.Users.RemoveRange(unverifiedUsers);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<(bool, List<User>)> GetAllUsersAsync()
         {
             var users = await _context.Users.ToListAsync();
