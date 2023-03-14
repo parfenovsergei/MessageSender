@@ -1,27 +1,27 @@
 ﻿using MessageSenderAPI.Services.Interfaces;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace MessageSenderAPI.Services.Background
 {
-    public class EmailBackgroundService : BackgroundService
+    public class VerifiedUserBackgroundService : BackgroundService
     {
         private const int delay = 1 * 60 * 1000;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        public EmailBackgroundService(IServiceScopeFactory serviceScopeFactory)
+        public VerifiedUserBackgroundService(IServiceScopeFactory serviceScopeFactory)
         {
             _serviceScopeFactory = serviceScopeFactory;
         }
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                Console.WriteLine("EmailBackgroundService work!");
+                Console.WriteLine("VerifiedUserBackgroundService work!");
                 using (var scope = _serviceScopeFactory.CreateScope())
                 {
-                    var _emailService = scope.ServiceProvider.GetService<IEmailService>();
-                    await _emailService.CheckToSendMessagesAsync();
+                    var _userService = scope.ServiceProvider.GetService<IUserService>();
+                    await _userService.CheckUnverifiedUsersAsync();                    
                 }
-                Console.WriteLine("EmailBackgroundService completed. Wait 1 minute to work again!");
+                Console.WriteLine("VerifiedUserBackgroundService completed. Wait 5 minute to work again!");
                 await Task.Delay(delay, stoppingToken);
             }
         }

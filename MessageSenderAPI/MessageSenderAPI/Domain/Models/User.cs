@@ -12,6 +12,7 @@ namespace MessageSenderAPI.Domain.Models
         public bool IsVerifed { get; set; }
         public int VerifyCode { get; set; }
         public bool IsChangingPassword { get; set; }
+        public DateTime CreateAndVerifyTime { get; set; }
         public List<Message> Messages { get; set; } = new List<Message>();
     }
 }

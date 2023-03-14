@@ -46,7 +46,8 @@ namespace MessageSenderAPI.Services.Implementations
                     Salt = salt,
                     Role = Role.User,
                     IsVerifed = false,
-                    VerifyCode = GenerateVerifyCode()
+                    VerifyCode = GenerateVerifyCode(),
+                    CreateAndVerifyTime = DateTime.Now
                 };
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
