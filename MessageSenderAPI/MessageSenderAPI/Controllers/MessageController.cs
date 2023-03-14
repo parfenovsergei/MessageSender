@@ -48,7 +48,6 @@ namespace MessageSenderAPI.Controllers
                 return Ok(messageViewDto);
             }
             return NoContent();
-           
         }
 
         [AuthorizeRoles(Role.Admin)]
@@ -71,9 +70,9 @@ namespace MessageSenderAPI.Controllers
             var userEmail = HttpContext.User.Claims.Single(x => x.Type == ClaimTypes.Email).Value;
             var message = _mapper.Map<Message>(messageDTO);
             var result = await _messageService.CreateMessageAsync(message, userEmail);
-            if(result.Item1)
-                return Ok(result.Item2);
-            return BadRequest(result.Item2);
+            if(result.Flag)
+                return Ok(result);
+            return BadRequest(result);
         }
 
         [HttpPut("messages/{id}")]
@@ -81,18 +80,18 @@ namespace MessageSenderAPI.Controllers
         {
             var message = _mapper.Map<Message>(messageDTO);
             var result = await _messageService.UpdateMessageAsync(id, message);
-            if (result.Item1)
-                return Ok(result.Item2);
-            return BadRequest(result.Item2);
+            if (result.Flag)
+                return Ok(result);
+            return BadRequest(result);
         }
 
         [HttpDelete("messages/{id}")]
         public async Task<IActionResult> DeleteMessageAsync(int id)
         {
             var result = await _messageService.DeleteMessageAsync(id);
-            if (result.Item1)
-                return Ok(result.Item2);
-            return BadRequest(result.Item2);
+            if (result.Flag)
+                return Ok(result);
+            return BadRequest(result);
         }
     }
 }
