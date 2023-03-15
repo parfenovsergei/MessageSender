@@ -4,7 +4,7 @@ namespace MessageSenderAPI.Services.Background
 {
     public class VerifiedUserBackgroundService : BackgroundService
     {
-        private const int delay = 1 * 60 * 1000;
+        private const int delay = 3 * 60 * 1000;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         public VerifiedUserBackgroundService(IServiceScopeFactory serviceScopeFactory)
         {
@@ -21,7 +21,7 @@ namespace MessageSenderAPI.Services.Background
                     var _userService = scope.ServiceProvider.GetService<IUserService>();
                     await _userService.CheckUnverifiedUsersAsync();                    
                 }
-                Console.WriteLine("VerifiedUserBackgroundService completed. Wait 5 minute to work again!");
+                Console.WriteLine("VerifiedUserBackgroundService completed. Wait 3 minutes to work again!");
                 await Task.Delay(delay, stoppingToken);
             }
         }

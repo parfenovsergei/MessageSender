@@ -15,9 +15,15 @@ namespace MessageSenderAPI.Services.Implementations
         public async Task CheckUnverifiedUsersAsync()
         {
             var unverifiedUsers = _context.Users
-                .Where(u => u.IsVerifed == false && u.CreateAndVerifyTime < DateTime.Now);
-            _context.Users.RemoveRange(unverifiedUsers);
-            await _context.SaveChangesAsync();
+                .Where(u => u.IsVerifed == false && u.CreateAndVerifyTime.AddMinutes(2) <= DateTime.Now);
+            if (unverifiedUsers != null)
+            {
+                _context.Users.RemoveRange(unverifiedUsers);
+                await _context.SaveChangesAsync();
+                Console.WriteLine("Unverified users deleted!");
+            }
+            else
+                Console.WriteLine("All verified!");
         }
 
         public async Task<(bool, List<User>)> GetAllUsersAsync()
