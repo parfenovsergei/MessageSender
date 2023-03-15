@@ -18,6 +18,7 @@ export class AuthService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
+  isConfirm: boolean;
   email!: string;
   currentUser: User = {
     email: null!,
@@ -28,7 +29,9 @@ export class AuthService {
     private http: HttpClient, 
     private snackBar: MatSnackBar,
     private router: Router,
-    private jwtHelper: JwtHelperService) { }
+    private jwtHelper: JwtHelperService) { 
+      this.isConfirm = false;
+    }
 
   registration(email: string, password: string, confirmPassword: string) : Observable<GeneralResponse>{
     return this.http.post<GeneralResponse>(
@@ -120,5 +123,9 @@ export class AuthService {
 
   showMessage(message: string, action: string){
     this.snackBar.open(message, action, {duration: 4000});
+  }
+
+  isConfirmed(){
+    return this.isConfirm;
   }
 }

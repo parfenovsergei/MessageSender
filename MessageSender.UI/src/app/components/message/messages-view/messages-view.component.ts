@@ -50,7 +50,12 @@ export class MessagesViewComponent implements OnInit{
       .subscribe((response: GeneralResponse) => {
         if(response.flag){
           this.messageService.showMessage(response.message, "OK");
-          this.getMessages();
+          if(this.selectedUser != null){
+            this.changeSelectedUser();
+          }
+          else{
+            this.getMessages();
+          }
         }
         else{
           this.messageService.showMessage(response.message, "OK");

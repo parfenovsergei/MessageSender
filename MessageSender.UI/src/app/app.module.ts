@@ -30,12 +30,13 @@ import { DialogComponent } from './components/dialog/delete-dialog/dialog.compon
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { LogoutDialogComponent } from './components/dialog/logout-dialog/logout-dialog.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { ChangePasswordGuard } from './services/change-password.guard';
 
 const appRoutes: Routes =[
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent},
   { path: 'registration', component: RegisterComponent},
-  { path: 'change-password', component: ChangePasswordComponent},
+  { path: 'change-password', component: ChangePasswordComponent, canActivate: [ChangePasswordGuard]},
   { path: 'message', component: MessageComponent},
   { path: 'messages/:id', component: MessageEditComponent},
   { path: 'messages', component: MessagesViewComponent}  
@@ -81,7 +82,8 @@ const appRoutes: Routes =[
     })
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true}
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true},
+    ChangePasswordGuard
   ],
   bootstrap: [AppComponent]
 })

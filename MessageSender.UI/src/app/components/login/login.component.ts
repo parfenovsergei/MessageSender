@@ -14,11 +14,13 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent {
   isForgot: boolean;
   isSendCode: boolean;
+  isConfirm: boolean;
   loginForm: FormGroup;
 
   constructor(private authService: AuthService, private router: Router){
     this.isForgot = false;
     this.isSendCode = false;
+    this.isConfirm = false;
     this.loginForm = new FormGroup({
       Email: new FormControl("", [
         Validators.required,
@@ -120,6 +122,7 @@ export class LoginComponent {
       )
       .subscribe((response: GeneralResponse) => {
           this.authService.showMessage(response.message, "OK");
+          this.isConfirm = true;
           this.router.navigate(['change-password']);
         },
         (err) => {
