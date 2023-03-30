@@ -1,0 +1,51 @@
+<div *ngIf="!isAdmin()" class="main-title">
+    <h2>My messages</h2>
+</div>
+<div *ngIf="isAdmin()" class="main-title">
+    <h2>Messages</h2>
+</div>
+<div *ngIf="isAdmin()" class="selecter">
+    <h4>Choose user</h4>
+    
+    <mat-form-field appearance="fill">
+        <mat-label>Users</mat-label>
+        <mat-select [(value)]="selectedUser" (selectionChange)="changeSelectedUser()">
+            <mat-option *ngFor="let user of users" [value]="user.id">
+            {{user.email}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div class="main-div"> 
+    <div fxLayout="row wrap" fxLayoutGap="12px grid">
+        <div class="content" fxFlex="50%" *ngFor="let item of messages">
+            <mat-card class="card">
+                <mat-card-header class="card-header">
+                    <mat-card-title *ngIf="item.messageTheme">{{item.messageTheme}}</mat-card-title>
+                    <mat-card-title *ngIf="!item.messageTheme">No theme</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="card-content">
+                    <p>{{item.messageBody}}</p>
+                    <div class="send">
+                        <span>{{item.sendDate | date:'MMMM, d, y, HH:mm'}}</span>
+                        <div *ngIf="item.isSend">
+                            <mat-icon fontIcon="done"></mat-icon>
+                        </div>
+                        <div *ngIf="!item.isSend">
+                            <mat-icon fontIcon="watch_later"></mat-icon>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                </mat-card-content>
+                <mat-card-actions class="cardActions">
+                    <button *ngIf="!item.isSend"
+                            mat-button color="warn"
+                            [routerLink]="['/messages', item.id]">
+                        <mat-icon fontIcon="edit"></mat-icon>
+                    </button>
+                    <button mat-button color="warn" (click)="openDeleteDialog(item.id)"><mat-icon fontIcon="delete"></mat-icon></button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div>

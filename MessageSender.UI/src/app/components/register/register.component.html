@@ -1,0 +1,51 @@
+<div class="main-div">
+	<mat-card>
+		<mat-card-header class="headerCard">
+			<h2>Registration</h2>
+		</mat-card-header>
+		<mat-card-content class="registerCard">
+			<form [formGroup]="registerForm">
+				<mat-form-field class="example-full-width">
+					<mat-label>Email</mat-label>
+					<input matInput formControlName="Email">
+					<mat-error *ngIf="registerForm.invalid">{{getEmailErrorMessage()}}</mat-error>
+				</mat-form-field>
+				<mat-form-field class="example-full-width">
+					<mat-label>Password</mat-label>
+					<input type="password" matInput formControlName="Password" >
+					<mat-error *ngIf="registerForm.invalid">{{getPasswordErrorMessage()}}</mat-error>
+				</mat-form-field>
+				<mat-form-field class="example-full-width">
+					<mat-label>Confirm Password</mat-label>
+					<input type="password" matInput formControlName="ConfirmPassword">
+					<mat-error *ngIf="registerForm.invalid">{{getConfirmPasswordErrorMessage()}}</mat-error>
+				</mat-form-field>
+				<mat-form-field *ngIf="isRegistration">
+					<mat-label>Code</mat-label>
+					<input matInput type="number" formControlName="Code">
+					<mat-error *ngIf="registerForm.invalid">{{getCodeErrorMessage()}}</mat-error>
+				</mat-form-field>
+				<div class="register-button">
+					<button 
+						*ngIf="!isRegistration"
+						[disabled]="registerForm.invalid" 
+						mat-raised-button 
+						color="warn"
+						(click)="registration()"
+						>
+						Registration
+					</button>
+					<button
+						*ngIf="isRegistration"
+						[disabled]="registerForm.invalid"
+						mat-raised-button
+						color="warn" 
+						(click)="verifyCode(code.value)"
+						>
+						Confirm
+					</button>
+				</div>
+			</form>
+		</mat-card-content>	
+	</mat-card>
+</div>
